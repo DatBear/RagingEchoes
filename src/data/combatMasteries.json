@@ -1,0 +1,128 @@
+[
+    {
+        "name": "Melee I",
+        "image": "https://oldschool.runescape.wiki/images/Melee_I.png",
+        "style": 0,
+        "level": 1,
+        "description": ""
+    },
+    {
+        "name": "Melee II",
+        "image": "https://oldschool.runescape.wiki/images/Melee_II.png",
+        "style": 0,
+        "level": 2,
+        "description": ""
+    },
+    {
+        "name": "Melee III",
+        "image": "https://oldschool.runescape.wiki/images/Melee_II.png",
+        "style": 0,
+        "level": 3,
+        "description": ""
+    },
+    {
+        "name": "Melee IV",
+        "image": "https://oldschool.runescape.wiki/images/Melee_IV.png",
+        "style": 0,
+        "level": 4,
+        "description": ""
+    },
+    {
+        "name": "Melee V",
+        "image": "https://oldschool.runescape.wiki/images/Melee_V.png",
+        "style": 0,
+        "level": 5,
+        "description": ""
+    },
+    {
+        "name": "Melee VI",
+        "image": "https://oldschool.runescape.wiki/images/Melee_VI.png",
+        "style": 0,
+        "level": 6,
+        "description": ""
+    },
+    {
+        "name": "Ranged I",
+        "image": "https://oldschool.runescape.wiki/images/Ranged_I.png",
+        "style": 1,
+        "level": 1,
+        "description": ""
+    },
+    {
+        "name": "Ranged II",
+        "image": "https://oldschool.runescape.wiki/images/Ranged_II.png",
+        "style": 1,
+        "level": 2,
+        "description": ""
+    },
+    {
+        "name": "Ranged III",
+        "image": "https://oldschool.runescape.wiki/images/Ranged_III.png",
+        "style": 1,
+        "level": 3,
+        "description": ""
+    },
+    {
+        "name": "Ranged IV",
+        "image": "https://oldschool.runescape.wiki/images/Ranged_IV.png",
+        "style": 1,
+        "level": 4,
+        "description": ""
+    },
+    {
+        "name": "Ranged V",
+        "image": "https://oldschool.runescape.wiki/images/Ranged_V.png",
+        "style": 1,
+        "level": 5,
+        "description": ""
+    },
+    {
+        "name": "Ranged VI",
+        "image": "https://oldschool.runescape.wiki/images/Ranged_VI.png",
+        "style": 1,
+        "level": 6,
+        "description": ""
+    },
+    {
+        "name": "Magic I",
+        "image": "https://oldschool.runescape.wiki/images/Magic_I.png",
+        "style": 2,
+        "level": 1,
+        "description": ""
+    },
+    {
+        "name": "Magic II",
+        "image": "https://oldschool.runescape.wiki/images/Magic_II.png",
+        "style": 2,
+        "level": 2,
+        "description": ""
+    },
+    {
+        "name": "Magic III",
+        "image": "https://oldschool.runescape.wiki/images/Magic_III.png",
+        "style": 2,
+        "level": 3,
+        "description": ""
+    },
+    {
+        "name": "Magic IV",
+        "image": "https://oldschool.runescape.wiki/images/Magic_IV.png",
+        "style": 2,
+        "level": 4,
+        "description": ""
+    },
+    {
+        "name": "Magic V",
+        "image": "https://oldschool.runescape.wiki/images/Magic_V.png",
+        "style": 2,
+        "level": 5,
+        "description": ""
+    },
+    {
+        "name": "Magic VI",
+        "image": "https://oldschool.runescape.wiki/images/Magic_VI.png",
+        "style": 2,
+        "level": 6,
+        "description": ""
+    }
+]

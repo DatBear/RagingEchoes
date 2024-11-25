@@ -1,0 +1,26 @@
+const skills = [
+  "Attack",
+  "Strength",
+  "Defence",
+  "Range",
+  "Prayer",
+  "Magic",
+  "Runecrafting",
+  "Construction",
+  "Hitpoints",
+  "Agility",
+  "Herblore",
+  "Thieving",
+  "Crafting",
+  "Fletching",
+  "Slayer",
+  "Hunter",
+  "Mining",
+  "Smithing",
+  "Fishing",
+  "Cooking",
+  "Firemaking",
+  "Woodcutting",
+  "Farming"
+];
+export { skills }

@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Misthalin",
+        "image": "https://oldschool.runescape.wiki/images/Misthalin_Area_Badge.png",
+        "default": true
+    },
+    {
+        "name": "Karamja",
+        "image": "https://oldschool.runescape.wiki/images/Karamja_Area_Badge.png",
+        "default": true
+    },
+    {
+        "name": "Asgarnia",
+        "image": "https://oldschool.runescape.wiki/images/Asgarnia_Area_Badge.png",
+        "code": "A"
+    },
+    {
+        "name": "Wilderness",
+        "image": "https://oldschool.runescape.wiki/images/Wilderness_Area_Badge.png",
+        "code": "W"
+    },
+    {
+        "name": "Fremennik",
+        "image": "https://oldschool.runescape.wiki/images/Fremennik_Area_Badge.png",
+        "code": "F"
+    },
+    {
+        "name": "Kandarin",
+        "image": "https://oldschool.runescape.wiki/images/Kandarin_Area_Badge.png",
+        "code": "K"
+    },
+    {
+        "name": "Desert",
+        "image": "https://oldschool.runescape.wiki/images/Desert_Area_Badge.png",
+        "code": "D"
+    },
+    {
+        "name": "Morytania",
+        "image": "https://oldschool.runescape.wiki/images/Morytania_Area_Badge.png",
+        "code": "M"
+    },
+    {
+        "name": "Kourend",
+        "image": "https://oldschool.runescape.wiki/images/Kourend_Area_Badge.png",
+        "code": "Z"
+    },
+    {
+        "name": "Varlamore",
+        "image": "https://oldschool.runescape.wiki/images/Varlamore_Area_Badge.png",
+        "code": "V"
+    },
+    {
+        "name": "Tirannwn",
+        "image": "https://oldschool.runescape.wiki/images/Tirannwn_Area_Badge.png",
+        "code": "T"
+    },
+    {
+        "name": "Unknown",
+        "code": "_",
+        "hidden": true
+    }
+]
