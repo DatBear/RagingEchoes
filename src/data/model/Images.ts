@@ -1,0 +1,32 @@
+import { skills } from "./Skill";
+
+const images: Record<string, string> = {
+  "law": "https://oldschool.runescape.wiki/images/thumb/Law_rune_detail.png/240px-Law_rune_detail.png",
+  "blood": "https://oldschool.runescape.wiki/images/thumb/Blood_rune_detail.png/240px-Blood_rune_detail.png",
+  "soul": "https://oldschool.runescape.wiki/images/thumb/Soul_rune_detail.png/240px-Soul_rune_detail.png",
+  "wrath": "https://oldschool.runescape.wiki/images/thumb/Wrath_rune_detail.png/240px-Wrath_rune_detail.png",
+  "astral": "https://oldschool.runescape.wiki/images/thumb/Astral_rune_detail.png/240px-Astral_rune_detail.png",
+  "lunar": "https://oldschool.runescape.wiki/images/Lunar_spellbook.png",
+  "ancients": "https://oldschool.runescape.wiki/images/Ancient_spellbook.png",
+  "arceuus": "https://oldschool.runescape.wiki/images/Arceuus_spellbook.png",
+  "normal spellbook": "https://oldschool.runescape.wiki/images/Standard_spellbook.png",
+  "piety": "https://oldschool.runescape.wiki/images/Piety.png",
+  "chivalry": "https://oldschool.runescape.wiki/images/Chivalry.png",
+  "augury": "https://oldschool.runescape.wiki/images/Augury.png",
+  "rigour": "https://oldschool.runescape.wiki/images/Rigour.png",
+  "armour": "https://oldschool.runescape.wiki/images/Defence_icon_%28detail%29.png",
+  "weapon": "https://oldschool.runescape.wiki/images/Attack_icon_%28detail%29.png",
+  "melee": "https://oldschool.runescape.wiki/images/Strength_icon_%28detail%29.png",
+  "ranged": "https://oldschool.runescape.wiki/images/Ranged_icon_%28detail%29.png",
+  "magic": "https://oldschool.runescape.wiki/images/Magic_icon_%28detail%29.png",
+  "rune pouch": "https://oldschool.runescape.wiki/images/thumb/Rune_pouch_detail.png/260px-Rune_pouch_detail.png",
+};
+
+skills.forEach(x => {
+  images[x.toLowerCase()] = `https://oldschool.runescape.wiki/images/${x}_icon_%28detail%29.png`
+});
+
+images["range"] = "https://oldschool.runescape.wiki/images/Ranged_icon_%28detail%29.png";
+images["runecrafting"] = "https://oldschool.runescape.wiki/images/Runecraft_icon_%28detail%29.png";
+
+export default images;

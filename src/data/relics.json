@@ -1,0 +1,163 @@
+[
+    {
+        "name": "Power Miner",
+        "order": 1,
+        "tier": "1",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Power_Miner_detail.png/100px-Power_Miner_detail.png",
+        "code": "PM"
+    },
+    {
+        "name": "Lumberjack",
+        "order": 1,
+        "tier": "1",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Lumberjack_detail.png/100px-Lumberjack_detail.png",
+        "code": "L"
+    },
+    {
+        "name": "Animal Wrangler",
+        "order": 1,
+        "tier": "1",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Animal_Wrangler_detail.png/100px-Animal_Wrangler_detail.png",
+        "code": "AW"
+    },
+    {
+        "name": "Friendly Forager",
+        "order": 2,
+        "tier": "2",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Friendly_Forager_detail.png/100px-Friendly_Forager_detail.png",
+        "code": "FrFo"
+    },
+    {
+        "name": "Corner Cutter",
+        "order": 2,
+        "tier": "2",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Corner_Cutter_detail.png/100px-Corner_Cutter_detail.png",
+        "code": "CoCu"
+    },
+    {
+        "name": "Dodgy Deals",
+        "order": 2,
+        "tier": "2",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Dodgy_Deals_detail.png/100px-Dodgy_Deals_detail.png",
+        "code": "DD"
+    },
+    {
+        "name": "Fairy's Flight",
+        "order": 3,
+        "tier": "3",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Fairy%27s_Flight_detail.png/100px-Fairy%27s_Flight_detail.png",
+        "code": "FaFl"
+    },
+    {
+        "name": "Bank Heist",
+        "order": 3,
+        "tier": "3",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Bank_Heist_detail.png/100px-Bank_Heist_detail.png",
+        "code": "BH"
+    },
+    {
+        "name": "Clue Compass",
+        "order": 3,
+        "tier": "3",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Clue_Compass_detail.png/100px-Clue_Compass_detail.png",
+        "code": "ClCo"
+    },
+    {
+        "name": "Golden God",
+        "order": 4,
+        "tier": "4",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Golden_God_detail.png/100px-Golden_God_detail.png",
+        "code": "GG"
+    },
+    {
+        "name": "Reloaded",
+        "order": 4,
+        "tier": "4",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Reloaded_detail.png/100px-Reloaded_detail.png",
+        "code": "R"
+    },
+    {
+        "name": "???",
+        "order": 4,
+        "tier": "4",
+        "image": "",
+        "code": "U4"
+    },
+    {
+        "name": "Grimoire",
+        "order": 5,
+        "tier": "?",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Grimoire_detail.png/100px-Grimoire_detail.png",
+        "code": "Gr"
+    },
+    {
+        "name": "Overgrown",
+        "order": 5,
+        "tier": "?",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Overgrown_detail.png/100px-Overgrown_detail.png",
+        "code": "O"
+    },
+    {
+        "name": "???",
+        "order": 5,
+        "tier": "?",
+        "image": "",
+        "code": "U5"
+    },
+    {
+        "name": "Total Recall",
+        "order": 6,
+        "tier": "TR vs BN",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Total_Recall_detail.png/100px-Total_Recall_detail.png",
+        "code": "TR"
+    },
+    {
+        "name": "Banker's Note",
+        "order": 6,
+        "tier": "TR vs BN",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Banker%27s_Note_detail.png/100px-Banker%27s_Note_detail.png",
+        "code": "BN"
+    },
+    {
+        "name": "Last Stand",
+        "order": 7,
+        "tier": "Combat",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Last_Stand_detail.png/100px-Last_Stand_detail.png",
+        "code": "LS"
+    },
+    {
+        "name": "Guardian",
+        "order": 7,
+        "tier": "Combat",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Guardian_detail.png/100px-Guardian_detail.png",
+        "code": "Gu"
+    },
+    {
+        "name": "Specialist",
+        "order": 7,
+        "tier": "Combat",
+        "image": "https://oldschool.runescape.wiki/images/thumb/Specialist_detail.png/100px-Specialist_detail.png",
+        "code": "S"
+    },
+    {
+        "name": "???",
+        "order": 8,
+        "tier": "Surprise",
+        "image": "",
+        "code": "U8_1"
+    },
+    {
+        "name": "???",
+        "order": 8,
+        "tier": "Surprise",
+        "image": "",
+        "code": "U8_2"
+    },
+    {
+        "name": "???",
+        "order": 8,
+        "tier": "Surprise",
+        "image": "",
+        "code": "U8_3"
+    }
+]
