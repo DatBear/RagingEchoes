@@ -50,6 +50,7 @@ export default function HomePage() {
   const [showRegions, setShowRegions] = useLocalStorage("showRegions", true);
   const [showMasteries, setShowMasteries] = useLocalStorage("showMasteries", true);
   const [showRelics, setShowRelics] = useLocalStorage("showRelics", true);
+  const [isLocked, setIsLocked] = useLocalStorage("isLocked", true);
 
   const hasSelections = () => {
     return userSelections.regions.length > 0 || userSelections.combatMasteries.length > 0 || userSelections.relics.length > 0;
@@ -132,9 +133,9 @@ export default function HomePage() {
   }, [pathname]);
 
   return <div className="w-full h-full text-white flex flex-col select-none min-h-screen">
-    <Regions userSelections={userSelections} toggle={toggleRegion} show={showRegions} setShow={setShowRegions} />
-    <Masteries userSelections={userSelections} toggle={toggleCombatMastery} show={showMasteries} setShow={setShowMasteries} />
-    <Relics userSelections={userSelections} toggle={toggleRelic} show={showRelics} setShow={setShowRelics} />
+    <Regions userSelections={userSelections} toggle={toggleRegion} show={showRegions} setShow={setShowRegions} isLocked={isLocked} />
+    <Masteries userSelections={userSelections} toggle={toggleCombatMastery} show={showMasteries} setShow={setShowMasteries} isLocked={isLocked} />
+    <Relics userSelections={userSelections} toggle={toggleRelic} show={showRelics} setShow={setShowRelics} isLocked={isLocked} />
 
     {!hasSelections() && <>
       <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 max-w-xl place-self-center">
@@ -174,9 +175,14 @@ type Hideable = {
   setShow: (show: boolean) => void;
 }
 
-type RegionsProps = Toggleable<Region> & UserSelectionProps & Hideable;
-function Regions({ userSelections, toggle, show, setShow }: RegionsProps) {
+type Lockable = {
+  isLocked: boolean;
+}
+
+type RegionsProps = Toggleable<Region> & UserSelectionProps & Hideable & Lockable;
+function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsProps) {
   {/* regions */ }
+  const regionCount = userSelections.regions.filter(x => !x.default && !x.hidden).length;
   return <div className={"relative"}>
     <div className={clsx("w-full flex flex-row bg-slate-900 items-center py-4 border-b-4 border-cyan-600", !show && "hidden")}>
       <div className="w-max text-nowrap font-semibold text-center pl-5">Regions</div>
@@ -184,7 +190,8 @@ function Regions({ userSelections, toggle, show, setShow }: RegionsProps) {
         {regions.filter(x => !x.default && !x.hidden).map(x => {
           const order = userSelections.regions.find(r => r.code === x.code)?.order;
           const hasSelections = userSelections.regions.length > 0;
-          return <button key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30")} onClick={() => toggle(x)}>
+          const lockClass = isLocked && regionCount == 3 && !order ? "hidden" : "";
+          return <button key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={() => toggle(x)}>
             <img src={x.image} alt={x.name} className="w-10" />
             {order && <div className="absolute top-3 font-bold text-shadow text-2xl text-cyan-300">
               {order}
@@ -201,8 +208,8 @@ function Regions({ userSelections, toggle, show, setShow }: RegionsProps) {
   </div>
 }
 
-type MasteriesProps = Toggleable<CombatMastery> & UserSelectionProps & Hideable;
-function Masteries({ userSelections, toggle, show, setShow }: MasteriesProps) {
+type MasteriesProps = Toggleable<CombatMastery> & UserSelectionProps & Hideable & Lockable;
+function Masteries({ userSelections, toggle, show, setShow, isLocked }: MasteriesProps) {
   {/* combat masteries */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row  items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
@@ -232,8 +239,8 @@ function Masteries({ userSelections, toggle, show, setShow }: MasteriesProps) {
   </div>
 }
 
-type RelicsProps = Toggleable<Relic> & UserSelectionProps & Hideable;
-function Relics({ userSelections, toggle, show, setShow }: RelicsProps) {
+type RelicsProps = Toggleable<Relic> & UserSelectionProps & Hideable & Lockable;
+function Relics({ userSelections, toggle, show, setShow, isLocked }: RelicsProps) {
   {/* relics */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row  items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
