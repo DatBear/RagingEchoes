@@ -50,6 +50,7 @@ export default function HomePage() {
   const [showRegions, setShowRegions] = useLocalStorage("showRegions", true);
   const [showMasteries, setShowMasteries] = useLocalStorage("showMasteries", true);
   const [showRelics, setShowRelics] = useLocalStorage("showRelics", true);
+  const [isLocked, setIsLocked] = useLocalStorage("isLocked", false);
 
   const hasSelections = () => {
     return userSelections.regions.length > 0 || userSelections.combatMasteries.length > 0 || userSelections.relics.length > 0;
@@ -132,9 +133,9 @@ export default function HomePage() {
   }, [pathname]);
 
   return <div className="w-full h-full text-white flex flex-col select-none min-h-screen">
-    <Regions userSelections={userSelections} toggle={toggleRegion} show={showRegions} setShow={setShowRegions} />
-    <Masteries userSelections={userSelections} toggle={toggleCombatMastery} show={showMasteries} setShow={setShowMasteries} />
-    <Relics userSelections={userSelections} toggle={toggleRelic} show={showRelics} setShow={setShowRelics} />
+    <Regions userSelections={userSelections} toggle={toggleRegion} show={showRegions} setShow={setShowRegions} isLocked={isLocked} />
+    <Masteries userSelections={userSelections} toggle={toggleCombatMastery} show={showMasteries} setShow={setShowMasteries} isLocked={isLocked} />
+    <Relics userSelections={userSelections} toggle={toggleRelic} show={showRelics} setShow={setShowRelics} isLocked={isLocked} toggleLock={setIsLocked} />
 
     {!hasSelections() && <>
       <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 max-w-xl place-self-center">
@@ -174,17 +175,26 @@ type Hideable = {
   setShow: (show: boolean) => void;
 }
 
-type RegionsProps = Toggleable<Region> & UserSelectionProps & Hideable;
-function Regions({ userSelections, toggle, show, setShow }: RegionsProps) {
+type Lockable = {
+  isLocked: boolean;
+}
+
+type Unlockable = {
+  toggleLock: (locked: boolean) => void;
+}
+
+type RegionsProps = Toggleable<Region> & UserSelectionProps & Hideable & Lockable;
+function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsProps) {
   {/* regions */ }
   return <div className={"relative"}>
     <div className={clsx("w-full flex flex-row bg-slate-900 items-center py-4 border-b-4 border-cyan-600", !show && "hidden")}>
       <div className="w-max text-nowrap font-semibold text-center pl-5">Regions</div>
       <div className="grid grid-cols-3 lg:grid-cols-9 justify-between items-center w-full px-10 min-w-max">
-        {regions.filter(x => !x.default && !x.hidden).map(x => {
+        {regions.filter(x => !x.default && !x.hidden).sort((a, b) => isLocked ? (userSelections.regions.find(x => x.code === a.code)?.order ?? 0) - (userSelections.regions.find(x => x.code === b.code)?.order ?? 0) : 0).map(x => {
           const order = userSelections.regions.find(r => r.code === x.code)?.order;
           const hasSelections = userSelections.regions.length > 0;
-          return <button key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30")} onClick={() => toggle(x)}>
+          const lockClass = isLocked && !order ? "hidden" : "";
+          return <button key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={() => toggle(x)}>
             <img src={x.image} alt={x.name} className="w-10" />
             {order && <div className="absolute top-3 font-bold text-shadow text-2xl text-cyan-300">
               {order}
@@ -201,22 +211,23 @@ function Regions({ userSelections, toggle, show, setShow }: RegionsProps) {
   </div>
 }
 
-type MasteriesProps = Toggleable<CombatMastery> & UserSelectionProps & Hideable;
-function Masteries({ userSelections, toggle, show, setShow }: MasteriesProps) {
+type MasteriesProps = Toggleable<CombatMastery> & UserSelectionProps & Hideable & Lockable;
+function Masteries({ userSelections, toggle, show, setShow, isLocked }: MasteriesProps) {
   {/* combat masteries */ }
   return <div className="relative">
-    <div className={clsx("w-full flex flex-row  items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
+    <div className={clsx("w-full flex flex-row items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
       <div className="w-max text-nowrap font-semibold pl-5 text-center">Combat <br />Masteries</div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 items-center justify-between w-full px-5">
+      <div className={clsx("grid gap-5 px-5", !isLocked ? "w-full grid-cols-1 lg:grid-cols-3" : "grid-cols-3")}>
         {combatStyles.map(style => {
           const name = CombatStyle[style];
           const hasCombatMastery = userSelections.combatMasteries.length > 0;
           const level = userSelections.combatMasteries.find(m => m.style === style)?.level ?? 0;
-          return <div key={name} className="flex flex-col items-center">
+          const hideClass = isLocked ? "hidden" : "opacity-20";
+          return <div key={name} className={clsx("flex flex-col items-center", isLocked && level == 0 && hideClass)}>
             <div className="font-bold">{name}</div>
             <div className="flex flex-row gap-3">
               {combatMasteries.filter(x => x.style === style).map(x => {
-                return <button key={x.name} className={clsx("flex flex-col min-w-8", hasCombatMastery && level < x.level && "opacity-20")} onClick={() => toggle(x)}>
+                return <button key={x.name} className={clsx("flex flex-col min-w-8", hasCombatMastery && (x.level > level || (isLocked && x.level < level)) ? hideClass : "")} onClick={() => toggle(x)}>
                   <img src={x.image} alt={x.name} className="w-8" />
                   <div className="mt-[-1rem] text-shadow font-bold">{x.name.split(" ")[1]}</div>
                 </button>
@@ -229,16 +240,16 @@ function Masteries({ userSelections, toggle, show, setShow }: MasteriesProps) {
     <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1 right-10", show ? "bottom-[-10px]" : "")} onClick={_ => setShow(!show)}>
       {show ? "x" : "v"}
     </button>
-  </div>
+  </div >
 }
 
-type RelicsProps = Toggleable<Relic> & UserSelectionProps & Hideable;
-function Relics({ userSelections, toggle, show, setShow }: RelicsProps) {
+type RelicsProps = Toggleable<Relic> & UserSelectionProps & Hideable & Lockable & Unlockable;
+function Relics({ userSelections, toggle, show, setShow, isLocked, toggleLock }: RelicsProps) {
   {/* relics */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row  items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
       <div className="w-max text-nowrap font-semibold text-center pl-5">Relics</div>
-      <div className="flex flex-row flex-wrap justify-around w-full px-5">
+      <div className={clsx("flex flex-row flex-wrap w-full px-5", isLocked ? "justify-start" : "justify-around")}>
         {[...new Set([...relics.map(x => x.order).sort((a, b) => a - b)])].map(order => {
           const tierName = relics.find(x => x.order === order)?.tier;
           const tierSelections = userSelections.relics.filter(x => x.order === order);
@@ -247,7 +258,8 @@ function Relics({ userSelections, toggle, show, setShow }: RelicsProps) {
             <div className="flex flex-row h-full">
               {relics.filter(x => x.order === order).map(relic => {
                 const isSelected = userSelections.relics.find(x => x.code === relic.code);
-                return <button key={relic.code} className={clsx("flex flex-col gap-2 w-24 items-center justify-center", tierSelections.length > 0 && !isSelected && "opacity-30")} onClick={_ => toggle(relic)}>
+                const hideClass = isLocked ? "hidden" : "opacity-30";
+                return <button key={relic.code} className={clsx("flex flex-col gap-2 w-24 items-center justify-center", tierSelections.length > 0 && !isSelected && hideClass)} onClick={_ => toggle(relic)}>
                   {relic.image?.length > 0 && <img src={relic.image} alt={relic.name} className="w-14" />}
                   {relic.image.length == 0 && <div className="w-14 h-14"></div>}
                   <div className="mt-[-2rem] text-shadow w-full font-bold">{relic.name}</div>
@@ -261,6 +273,9 @@ function Relics({ userSelections, toggle, show, setShow }: RelicsProps) {
     <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1 right-16", show ? "bottom-[-10px]" : "")} onClick={_ => setShow(!show)}>
       {show ? "x" : "v"}
     </button>
+    <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1", show ? "bottom-[-10px]" : "")} onClick={_ => toggleLock(!isLocked)}>
+      {isLocked ? "🔒" : "🔓"}
+    </button>
   </div>
 }
 
@@ -270,6 +285,7 @@ type UserSelectionProps = {
 }
 
 function Spellbooks({ userSelections }: UserSelectionProps) {
+  {/* spellbooks */ }
   return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-max">
     <h1 className="font-bold text-2xl w-full text-center">Spellbooks</h1>
     <div className="flex flex-row gap-4 items-center justify-center h-full">
@@ -317,7 +333,7 @@ function Runes({ userSelections }: UserSelectionProps) {
 
 function Skills({ userSelections }: UserSelectionProps) {
   {/* skills */ }
-  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full">
+  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full lg:max-w-96">
     <h1 className="font-bold text-2xl w-full text-center">Skills</h1>
     <div className="flex flex-row gap-4 items-center justify-center h-full flex-wrap">
       {skills.map(x => {
@@ -381,11 +397,6 @@ function Gear({ userSelections }: UserSelectionProps) {
                       <div className="font-bold text-center">{GearTier[tier]}</div>
                       <div className="flex flex-row gap-1 flex-wrap justify-around w-full">
                         {[...new Set(filteredGear.map(x => x.name).sort((a, b) => a.localeCompare(b)))].join(" | ")}
-                        {/* {filteredGear.map((x, idx) => {
-                          return <div key={x.name + x.region} className={clsx("text-center w-full lg:w-24 flex items-center justify-center")}>
-                            {x.name}
-                          </div>
-                        })} */}
                         {filteredGear.length === 0 && <div className="text-gray-500 italic">None</div>}
                       </div>
                     </div>
@@ -403,7 +414,7 @@ function Gear({ userSelections }: UserSelectionProps) {
 function Coffee() {
   return <div className="w-full text-center my-5 flex flex-col items-center justify-center">
     <div>Loving this website?</div>
-    <a className="py-2 px-2 bg-cyan-900 rounded-md w-max" href="https://buymeacoffee.com/Gecko" target="_blank"> ☕Buy me a coffee</a>
+    <a className="py-2 px-2 bg-cyan-900 rounded-md w-max" href="https://buymeacoffee.com/themrgecko?utm_source=ragingechoes.com" target="_blank"> ☕Buy me a coffee</a>
   </div>
 }
 
