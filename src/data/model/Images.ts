@@ -41,4 +41,6 @@ images.gear = "https://oldschool.runescape.wiki/images/Attack_style_icon.png?ceb
 images["range"] = "https://oldschool.runescape.wiki/images/Ranged_icon_%28detail%29.png";
 images["runecrafting"] = "https://oldschool.runescape.wiki/images/Runecraft_icon_%28detail%29.png";
 
+images.wiki = "https://oldschool.runescape.wiki/images/Wiki.png";
+
 export default images;

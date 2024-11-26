@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Suspense } from "react";
 import PlausibleProvider from "next-plausible";
+import WikiStateContextProvider from "./contexts/WikiStateContext";
 
 export const metadata: Metadata = {
   title: "Raging Echoes League Planner",
@@ -18,7 +19,9 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} bg-black`}>
       <body>
         <PlausibleProvider domain="ragingechoes.com">
-          {children}
+          <WikiStateContextProvider>
+            {children}
+          </WikiStateContextProvider>
         </PlausibleProvider>
       </body>
     </html>
