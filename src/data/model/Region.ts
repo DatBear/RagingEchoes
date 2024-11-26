@@ -8,6 +8,8 @@ type Region = {
   default?: boolean;
   hidden?: boolean;
   code?: string;
+  wikiName?: string;
+
   cleanName: string;
 }
 

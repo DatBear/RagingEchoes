@@ -229,13 +229,13 @@ function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsPro
           const order = userSelections.regions.find(r => r.code === x.code)?.order;
           const hasSelections = userSelections.regions.length > 0;
           const lockClass = isLocked && !order ? "hidden" : "";
-          return <button key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={e => { e.preventDefault(); toggle(x) }}>
+          return <a key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={e => { e.preventDefault(); toggle(x) }} {...wikiLinkProps('Raging Echoes League/Areas#' + (x.wikiName ?? x.name))}>
             <img src={x.image} alt={x.name} className="w-10" />
             {order && <div className="absolute top-3 font-bold text-shadow text-2xl text-cyan-300">
               {order}
             </div>}
             <div className="absolute bottom-0 font-bold text-shadow">{x.name}</div>
-          </button>
+          </a>
         })}
       </div>
     </div>
@@ -259,10 +259,11 @@ function Masteries({ userSelections, toggle, show, setShow, isLocked }: Masterie
             <a className="font-bold" {...wikiLinkProps('Raging Echoes League/Combat Masteries#' + name)}>{name}</a>
             <div className="flex flex-row gap-3">
               {combatMasteries.filter(x => x.style === style).map(x => {
-                return <button key={x.name} className={clsx("flex flex-col min-w-8", hasCombatMastery && (x.level > level || (isLocked && x.level < level)) ? hideClass : "")} onClick={e => { e.preventDefault(); toggle(x) }}>
+                const masteryClass = clsx("flex flex-col min-w-8", hasCombatMastery && (x.level > level || (isLocked && x.level < level)) ? hideClass : "");
+                return <a key={x.name} className={masteryClass} onClick={e => { e.preventDefault(); toggle(x) }} {...wikiLinkProps('Raging Echoes League/Combat Masteries#' + name, isWikiActive)}>
                   <img src={x.image} alt={x.name} className="w-8" />
                   <div className="mt-[-1rem] text-shadow font-bold">{x.name.split(" ")[1]}</div>
-                </button>
+                </a>
               })}
             </div>
           </div>
@@ -290,11 +291,11 @@ function Relics({ userSelections, toggle, show, setShow, isLocked, setIsLocked, 
               {relics.filter(x => x.order === order).map(relic => {
                 const isSelected = userSelections.relics.find(x => x.code === relic.code);
                 const hideClass = isLocked ? "hidden" : "opacity-30";
-                return <button key={relic.code} className={clsx("flex flex-col gap-2 w-24 items-center justify-center", tierSelections.length > 0 && !isSelected && hideClass)} onClick={e => { e.preventDefault(); toggle(relic) }}>
+                return <a key={relic.code} className={clsx("flex flex-col gap-2 w-24 items-center justify-center text-center", tierSelections.length > 0 && !isSelected && hideClass)} onClick={e => { e.preventDefault(); toggle(relic) }} {...wikiLinkProps(relic.name, isWikiActive)}>
                   {relic.image?.length > 0 && <img src={relic.image} alt={relic.name} className="w-14" />}
                   {relic.image.length == 0 && <div className="w-14 h-14"></div>}
                   <div className="mt-[-2rem] text-shadow w-full font-bold">{relic.name}</div>
-                </button>
+                </a>
               })}
             </div>
           </div>
