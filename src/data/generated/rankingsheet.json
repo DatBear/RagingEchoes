@@ -2,7 +2,7 @@
     {
         "name": "Attack",
         "regions": {
-            "misthalin": 1,
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 0,
@@ -28,13 +28,21 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
         "name": "Strength",
         "regions": {
-            "misthalin": 1,
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 0,
@@ -60,13 +68,21 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
         "name": "Defence",
         "regions": {
-            "misthalin": 1,
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 3,
@@ -92,13 +108,21 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
         "name": "Range",
         "regions": {
-            "misthalin": 1,
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 0,
@@ -124,7 +148,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -156,13 +188,21 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
         "name": "Magic",
         "regions": {
-            "misthalin": 0,
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 3,
@@ -188,7 +228,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -220,7 +268,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -252,13 +308,21 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 3
         }
     },
     {
         "name": "Hitpoints",
         "regions": {
-            "misthalin": 1,
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 3,
@@ -284,7 +348,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -316,7 +388,15 @@
             "overgrown": 0,
             "corner cutter": 3,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 3,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -325,7 +405,7 @@
             "misthalin": 0,
             "karamja": 0,
             "asgarnia": 1,
-            "desert": 3,
+            "desert": 2,
             "fremennik": 2,
             "kandarin": 2,
             "morytania": 0,
@@ -348,7 +428,15 @@
             "overgrown": 3,
             "corner cutter": 0,
             "friendly forager": 3,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 2
         }
     },
     {
@@ -380,7 +468,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 3
+            "dodgy deals": 3,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -412,7 +508,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -444,7 +548,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -476,7 +588,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 3,
+            "pocket kingdom": 0
         }
     },
     {
@@ -508,7 +628,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -540,7 +668,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -572,7 +708,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 2
         }
     },
     {
@@ -604,7 +748,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -636,7 +788,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -668,7 +828,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -700,7 +868,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -732,7 +908,15 @@
             "overgrown": 3,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 2
+            "dodgy deals": 2,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -764,7 +948,15 @@
             "overgrown": 0,
             "corner cutter": 2,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 2,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -796,7 +988,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 2
         }
     },
     {
@@ -820,15 +1020,23 @@
             "animal wrangler": 0,
             "golden god": 0,
             "grimoire": 1,
-            "fairys flight": 2,
-            "bank heist": 2,
-            "clue compass": 2,
+            "fairys flight": 3,
+            "bank heist": 3,
+            "clue compass": 3,
             "bankers note": 0,
-            "total recall": 2,
+            "total recall": 3,
             "overgrown": 1,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -860,13 +1068,21 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
         "name": "Seed Access",
         "regions": {
-            "misthalin": 0,
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 0,
@@ -875,7 +1091,7 @@
             "morytania": 0,
             "tirannwn": 0,
             "wilderness": 0,
-            "kourend": 0,
+            "kourend": 3,
             "varlamore": 0
         },
         "relics": {
@@ -892,23 +1108,31 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 3
+            "dodgy deals": 3,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 3
         }
     },
     {
         "name": "Limpwurt",
         "regions": {
             "misthalin": 0,
-            "karamja": 0,
+            "karamja": 1,
             "asgarnia": 0,
             "desert": 0,
-            "fremennik": 0,
+            "fremennik": 3,
             "kandarin": 0,
-            "morytania": 0,
+            "morytania": 3,
             "tirannwn": 0,
-            "wilderness": 0,
+            "wilderness": 2,
             "kourend": 0,
-            "varlamore": 0
+            "varlamore": 3
         },
         "relics": {
             "power miner": 0,
@@ -924,13 +1148,21 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 2
+            "dodgy deals": 2,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 1
         }
     },
     {
         "name": "White Berries",
         "regions": {
-            "misthalin": 0,
+            "misthalin": 1,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 0,
@@ -956,7 +1188,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 2
+            "dodgy deals": 2,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 1
         }
     },
     {
@@ -964,15 +1204,15 @@
         "regions": {
             "misthalin": 0,
             "karamja": 0,
-            "asgarnia": 1,
+            "asgarnia": 3,
             "desert": 0,
             "fremennik": 0,
-            "kandarin": 1,
+            "kandarin": 3,
             "morytania": 0,
-            "tirannwn": 1,
+            "tirannwn": 3,
             "wilderness": 0,
-            "kourend": 1,
-            "varlamore": 1
+            "kourend": 3,
+            "varlamore": 3
         },
         "relics": {
             "power miner": 0,
@@ -988,7 +1228,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -1020,7 +1268,15 @@
             "overgrown": 1,
             "corner cutter": 0,
             "friendly forager": 3,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 3
         }
     },
     {
@@ -1035,7 +1291,7 @@
             "morytania": 0,
             "tirannwn": 0,
             "wilderness": 0,
-            "kourend": 1,
+            "kourend": 2,
             "varlamore": 1
         },
         "relics": {
@@ -1052,7 +1308,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 2,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -1064,8 +1328,48 @@
             "desert": 0,
             "fremennik": 0,
             "kandarin": 0,
-            "morytania": 0,
-            "tirannwn": 0,
+            "morytania": 2,
+            "tirannwn": 2,
+            "wilderness": 0,
+            "kourend": 2,
+            "varlamore": 2
+        },
+        "relics": {
+            "power miner": 0,
+            "lumberjack": 0,
+            "animal wrangler": 0,
+            "golden god": 0,
+            "grimoire": 0,
+            "fairys flight": 0,
+            "bank heist": 0,
+            "clue compass": 0,
+            "bankers note": 0,
+            "total recall": 0,
+            "overgrown": 0,
+            "corner cutter": 0,
+            "friendly forager": 3,
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 3
+        }
+    },
+    {
+        "name": "Anti Venoms Secondary",
+        "regions": {
+            "misthalin": 0,
+            "karamja": 0,
+            "asgarnia": 0,
+            "desert": 0,
+            "fremennik": 0,
+            "kandarin": 0,
+            "morytania": 2,
+            "tirannwn": 3,
             "wilderness": 0,
             "kourend": 0,
             "varlamore": 0
@@ -1083,14 +1387,62 @@
             "total recall": 0,
             "overgrown": 0,
             "corner cutter": 0,
-            "friendly forager": 3,
-            "dodgy deals": 0
+            "friendly forager": 0,
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
-        "name": "Anti Venoms Secondary",
+        "name": "Antifires Primary\n",
         "regions": {
             "misthalin": 0,
+            "karamja": 0,
+            "asgarnia": 0,
+            "desert": 0,
+            "fremennik": 0,
+            "kandarin": 0,
+            "morytania": 0,
+            "tirannwn": 0,
+            "wilderness": 0,
+            "kourend": 2,
+            "varlamore": 0
+        },
+        "relics": {
+            "power miner": 0,
+            "lumberjack": 0,
+            "animal wrangler": 0,
+            "golden god": 0,
+            "grimoire": 0,
+            "fairys flight": 0,
+            "bank heist": 0,
+            "clue compass": 0,
+            "bankers note": 0,
+            "total recall": 0,
+            "overgrown": 0,
+            "corner cutter": 0,
+            "friendly forager": 3,
+            "dodgy deals": 2,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
+        }
+    },
+    {
+        "name": "Antifires Secondary",
+        "regions": {
+            "misthalin": 2,
             "karamja": 0,
             "asgarnia": 0,
             "desert": 0,
@@ -1116,71 +1468,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
-        }
-    },
-    {
-        "name": "Antifires Primary\n",
-        "regions": {
-            "misthalin": 0,
-            "karamja": 0,
-            "asgarnia": 0,
-            "desert": 0,
-            "fremennik": 0,
-            "kandarin": 0,
-            "morytania": 0,
-            "tirannwn": 0,
-            "wilderness": 0,
-            "kourend": 0,
-            "varlamore": 0
-        },
-        "relics": {
-            "power miner": 0,
-            "lumberjack": 0,
-            "animal wrangler": 0,
-            "golden god": 0,
-            "grimoire": 0,
-            "fairys flight": 0,
-            "bank heist": 0,
-            "clue compass": 0,
-            "bankers note": 0,
-            "total recall": 0,
-            "overgrown": 0,
-            "corner cutter": 0,
-            "friendly forager": 3,
-            "dodgy deals": 0
-        }
-    },
-    {
-        "name": "Antifires Secondary",
-        "regions": {
-            "misthalin": 0,
-            "karamja": 0,
-            "asgarnia": 0,
-            "desert": 0,
-            "fremennik": 0,
-            "kandarin": 0,
-            "morytania": 0,
-            "tirannwn": 0,
-            "wilderness": 0,
-            "kourend": 0,
-            "varlamore": 0
-        },
-        "relics": {
-            "power miner": 0,
-            "lumberjack": 0,
-            "animal wrangler": 0,
-            "golden god": 0,
-            "grimoire": 0,
-            "fairys flight": 0,
-            "bank heist": 0,
-            "clue compass": 0,
-            "bankers note": 0,
-            "total recall": 0,
-            "overgrown": 0,
-            "corner cutter": 0,
-            "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -1212,7 +1508,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -1244,7 +1548,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     },
     {
@@ -1276,7 +1588,15 @@
             "overgrown": 0,
             "corner cutter": 0,
             "friendly forager": 0,
-            "dodgy deals": 0
+            "dodgy deals": 0,
+            "last stand": 0,
+            "guardian": 0,
+            "specialist": 0,
+            "equilibrium": 0,
+            "treasure arbiter": 0,
+            "production master": 0,
+            "slayer master": 0,
+            "pocket kingdom": 0
         }
     }
 ]

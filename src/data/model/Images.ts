@@ -20,11 +20,23 @@ const images: Record<string, string> = {
   "ranged": "https://oldschool.runescape.wiki/images/Ranged_icon_%28detail%29.png",
   "magic": "https://oldschool.runescape.wiki/images/Magic_icon_%28detail%29.png",
   "rune pouch": "https://oldschool.runescape.wiki/images/thumb/Rune_pouch_detail.png/260px-Rune_pouch_detail.png",
+  "spellbooks": "https://oldschool.runescape.wiki/images/Standard_spellbook.png",
+
 };
 
 skills.forEach(x => {
   images[x.toLowerCase()] = `https://oldschool.runescape.wiki/images/${x}_icon_%28detail%29.png`
 });
+
+images.regions = "https://oldschool.runescape.wiki/images/Misthalin_Area_Badge.png";
+images.masteries = "https://oldschool.runescape.wiki/images/Melee_I.png";
+images.relics = "https://oldschool.runescape.wiki/images/thumb/Power_Miner_detail.png/100px-Power_Miner_detail.png";
+images.prayers = images.prayer!;
+images.skills = images.attack!;
+images.runes = images.law!;
+images.bosses = images.slayer!;
+images.teleports = images.magic!;
+images.gear = "https://oldschool.runescape.wiki/images/Attack_style_icon.png?ceb2e";
 
 images["range"] = "https://oldschool.runescape.wiki/images/Ranged_icon_%28detail%29.png";
 images["runecrafting"] = "https://oldschool.runescape.wiki/images/Runecraft_icon_%28detail%29.png";

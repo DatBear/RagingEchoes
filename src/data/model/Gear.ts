@@ -25,9 +25,9 @@ type Gear = {
   isSpec: boolean;
   tier: GearTier;
   tickSpeed?: number;
-};
+}
 
-import rawGear from "~/data/gear.json";
+import rawGear from "~/data/generated/gear.json";
 const gear = rawGear as unknown as Gear[];
 
 const gearSlots = Object.values(GearSlot)

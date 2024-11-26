@@ -1,21 +1,21 @@
 import UserSelections from "./UserSelections";
 
-import rawActivities from "~/data/rankingsheet.json";
+import rawActivities from "~/data/generated/rankingsheet.json";
 const activities = rawActivities as unknown as Activity[];
-import rawBosses from "~/data/bosses.json";
+import rawBosses from "~/data/generated/bosses.json";
 const bosses = rawBosses as unknown as Activity[];
-import rawRunes from "~/data/runes.json";
+import rawRunes from "~/data/generated/runes.json";
 const runes = rawRunes as unknown as Activity[];
-import rawPrayers from "~/data/prayers.json";
+import rawPrayers from "~/data/generated/prayers.json";
 const prayers = rawPrayers as unknown as Activity[];
-import rawSpellbooks from "~/data/spellbooks.json";
+import rawSpellbooks from "~/data/generated/spellbooks.json";
 const spellbooks = rawSpellbooks as unknown as Activity[];
 
-import rawFaFlTeleports from "~/data/teleports/FaFl.json";
+import rawFaFlTeleports from "~/data/generated/teleports/FaFl.json";
 const FaFlTeleports = rawFaFlTeleports as unknown as Activity[];
-import rawBHTeleports from "~/data/teleports/BH.json";
+import rawBHTeleports from "~/data/generated/teleports/BH.json";
 const BHTeleports = rawBHTeleports as unknown as Activity[];
-import rawCCTeleports from "~/data/teleports/ClCo.json";
+import rawCCTeleports from "~/data/generated/teleports/ClCo.json";
 const CCTeleports = rawCCTeleports as unknown as Activity[];
 
 const teleports = {
@@ -23,7 +23,6 @@ const teleports = {
   BH: BHTeleports,
   ClCo: CCTeleports
 };
-
 
 type Activity = {
   name: string;
