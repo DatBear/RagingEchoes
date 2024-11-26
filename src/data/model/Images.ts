@@ -36,11 +36,12 @@ images.skills = images.attack!;
 images.runes = images.law!;
 images.bosses = images.slayer!;
 images.teleports = images.magic!;
-images.gear = "https://oldschool.runescape.wiki/images/Attack_style_icon.png?ceb2e";
+images.gear = "https://oldschool.runescape.wiki/images/Attack_style_icon.png";
 
 images["range"] = "https://oldschool.runescape.wiki/images/Ranged_icon_%28detail%29.png";
 images["runecrafting"] = "https://oldschool.runescape.wiki/images/Runecraft_icon_%28detail%29.png";
 
 images.wiki = "https://oldschool.runescape.wiki/images/Wiki.png";
+images.minigames = "https://oldschool.runescape.wiki/images/thumb/Soul_cape_%28red%29_detail.png/200px-Soul_cape_%28red%29_detail.png";
 
 export default images;

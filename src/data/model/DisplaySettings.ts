@@ -13,6 +13,7 @@ type DisplaySettings = {
   teleports: boolean;
   gear: boolean;
   slayerMasters: boolean;
+  minigames: boolean;
 };
 
 const defaultDisplaySettings: DisplaySettings = {
@@ -27,7 +28,8 @@ const defaultDisplaySettings: DisplaySettings = {
   bosses: true,
   teleports: true,
   gear: true,
-  slayerMasters: true
+  slayerMasters: true,
+  minigames: true,
 };
 
 export default DisplaySettings;

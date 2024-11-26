@@ -9,7 +9,7 @@ import clsx from "clsx";
 import SelectedCombatMastery from "~/data/model/SelectedCombatMastery";
 import Relic, { relics } from "~/data/model/Relic";
 import { skills } from "~/data/model/Skill";
-import Activity, { activities, activityPoints, bosses, cleanName, prayers, runes, slayerMasters, spellbooks, teleports } from "~/data/model/Activity";
+import Activity, { activities, activityPoints, bosses, cleanName, minigames, prayers, runes, slayerMasters, spellbooks, teleports } from "~/data/model/Activity";
 import { CombatStyle, GearSlot, GearTier, combatStyles, filterGear, gear, gearSlots, gearTiers } from "~/data/model/Gear";
 import images from "~/data/model/Images";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
@@ -181,6 +181,7 @@ export default function HomePage() {
         <Bosses userSelections={userSelections} show={displaySettings.bosses} setShow={x => setDisplaySettings({ bosses: x })} />
         <Teleports userSelections={userSelections} show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })} />
         <SlayerMasters userSelections={userSelections} show={displaySettings.slayerMasters} setShow={x => setDisplaySettings({ teleports: x })} />
+        <Minigames userSelections={userSelections} show={displaySettings.minigames} setShow={x => setDisplaySettings({ minigames: x })} />
       </div>
       <Gear userSelections={userSelections} show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })} />
     </>}
@@ -340,6 +341,9 @@ function DisplaySettingsToolbar({ displaySettings, setDisplaySettings }: UsesDis
     </ImageToggleButton>
     <ImageToggleButton show={displaySettings.slayerMasters} setShow={x => setDisplaySettings({ slayerMasters: x })}>
       <img src={images["slayer"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.minigames} setShow={x => setDisplaySettings({ minigames: x })}>
+      <img src={images["minigames"]} className="w-4 h-4" />
     </ImageToggleButton>
   </>
 }
@@ -507,6 +511,20 @@ function SlayerMasters({ userSelections, show, setShow }: UserSelection & Hideab
       {filteredSlayerMasters.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
       {[...new Set(filteredSlayerMasters.map(x => x.name))].join(" | ")}
     </div>
+  </div>
+}
+
+function Minigames({ userSelections, show, setShow }: UserSelection & Hideable) {
+  if (!show) return null;
+  {/* minigames */ }
+  const filteredMinigames = minigames.filter(x => activityPoints(x, userSelections)).sort((a, b) => a.name.localeCompare(b.name));
+  return <div className="border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full md:max-w-xl flex flex-col">
+    <h1 className="font-bold text-2xl w-full text-center">Minigames</h1>
+    <div className="text-center">
+      {filteredMinigames.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
+      {[...new Set(filteredMinigames.map(x => x.name))].join(" | ")}
+    </div>
+    <div className="text-gray-500 italic text-center w-full">Minigame Reward Rates: 4x at Tier 1, 8x at Tier 4</div>
   </div>
 }
 

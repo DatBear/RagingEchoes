@@ -21,6 +21,9 @@ const CCTeleports = rawCCTeleports as unknown as Activity[];
 import rawSlayerMasters from "~/data/generated/slayerMasters.json";
 const slayerMasters = rawSlayerMasters as unknown as Activity[];
 
+import rawMinigames from "~/data/generated/minigames.json";
+const minigames = rawMinigames as unknown as Activity[];
+
 const teleports = {
   FaFl: FaFlTeleports,
   BH: BHTeleports,
@@ -47,4 +50,4 @@ const cleanName = (name: string) => {
 }
 
 export default Activity;
-export { activities, bosses, runes, prayers, spellbooks, teleports, slayerMasters, activityPoints, cleanName }
+export { activities, bosses, runes, prayers, spellbooks, teleports, slayerMasters, minigames, activityPoints, cleanName }
