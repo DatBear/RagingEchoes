@@ -44,4 +44,10 @@ images["runecrafting"] = "https://oldschool.runescape.wiki/images/Runecraft_icon
 images.wiki = "https://oldschool.runescape.wiki/images/Wiki.png";
 images.minigames = "https://oldschool.runescape.wiki/images/thumb/Soul_cape_%28red%29_detail.png/200px-Soul_cape_%28red%29_detail.png";
 
+images.bank = "https://oldschool.runescape.wiki/images/thumb/Bank_logo.png/240px-Bank_logo.png";
+images.clue = "https://oldschool.runescape.wiki/images/thumb/Clue_scroll_%28master%29_detail.png/300px-Clue_scroll_%28master%29_detail.png";
+images["fairy ring"] = "https://oldschool.runescape.wiki/images/thumb/Fairy_ring.png/400px-Fairy_ring.png";
+images["spirit tree"] = "https://oldschool.runescape.wiki/images/thumb/Spirit_tree.png/533px-Spirit_tree.png";
+images["tool leprechaun"] = "https://oldschool.runescape.wiki/images/thumb/Tool_Leprechaun.png/300px-Tool_Leprechaun.png";
+
 export default images;

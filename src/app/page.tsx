@@ -15,7 +15,8 @@ import images from "~/data/model/Images";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
 import DisplaySettings, { defaultDisplaySettings } from "~/data/model/DisplaySettings";
 import { useWiki } from "./contexts/WikiStateContext";
-import openWiki, { wikiClick, wikiPointer } from "./utils/openWiki";
+import openWiki, { wikiClick, wikiLinkProps, wikiPointer } from "./utils/openWiki";
+import { newTeleports } from "~/data/model/Teleport";
 
 const runeColors: Record<number, string> = {
   0: "bg-red-700",
@@ -179,15 +180,16 @@ export default function HomePage() {
         <Prayers userSelections={userSelections} show={displaySettings.prayers} setShow={x => setDisplaySettings({ prayers: x })} />
         <Runes userSelections={userSelections} show={displaySettings.runes} setShow={x => setDisplaySettings({ runes: x })} />
         <Bosses userSelections={userSelections} show={displaySettings.bosses} setShow={x => setDisplaySettings({ bosses: x })} />
-        <Teleports userSelections={userSelections} show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })} />
         <SlayerMasters userSelections={userSelections} show={displaySettings.slayerMasters} setShow={x => setDisplaySettings({ teleports: x })} />
         <Minigames userSelections={userSelections} show={displaySettings.minigames} setShow={x => setDisplaySettings({ minigames: x })} />
+        {/* <Teleports userSelections={userSelections} show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })} /> */}
+        <NewTeleports userSelections={userSelections} show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })} />
       </div>
       <Gear userSelections={userSelections} show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })} />
     </>}
 
     <div className="flex flex-grow m-3"></div>
-    <WikiButton />
+    <WikiButton displaySettings={displaySettings} setDisplaySettings={setDisplaySettings} />
     <Attribution />
   </div>
 }
@@ -221,13 +223,13 @@ function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsPro
   {/* regions */ }
   return <div className={"relative"}>
     <div className={clsx("w-full flex flex-row bg-slate-900 items-center py-4 border-b-4 border-cyan-600", !show && "hidden")}>
-      <div className={clsx("w-max text-nowrap font-semibold text-center pl-5", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging Echoes League/Areas', isWikiActive)}>Regions</div>
+      <a className={clsx("w-max text-nowrap font-semibold text-center pl-5", wikiPointer(isWikiActive))} {...wikiLinkProps('Raging Echoes League/Areas')}>Regions</a>
       <div className="grid grid-cols-3 lg:grid-cols-9 justify-between items-center w-full px-10 min-w-max">
         {regions.filter(x => !x.default && !x.hidden).sort((a, b) => isLocked ? (userSelections.regions.find(x => x.code === a.code)?.order ?? 0) - (userSelections.regions.find(x => x.code === b.code)?.order ?? 0) : 0).map(x => {
           const order = userSelections.regions.find(r => r.code === x.code)?.order;
           const hasSelections = userSelections.regions.length > 0;
           const lockClass = isLocked && !order ? "hidden" : "";
-          return <button key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={() => toggle(x)}>
+          return <button key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={e => { e.preventDefault(); toggle(x) }}>
             <img src={x.image} alt={x.name} className="w-10" />
             {order && <div className="absolute top-3 font-bold text-shadow text-2xl text-cyan-300">
               {order}
@@ -246,7 +248,7 @@ function Masteries({ userSelections, toggle, show, setShow, isLocked }: Masterie
   {/* combat masteries */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
-      <div className={clsx("w-max text-nowrap font-semibold pl-5 text-center", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging Echoes League/Combat Masteries', isWikiActive)}>Combat <br />Masteries</div>
+      <a className={clsx("w-max text-nowrap font-semibold pl-5 text-center", wikiPointer(isWikiActive))} {...wikiLinkProps('Raging Echoes League/Combat Masteries')}>Combat <br />Masteries</a>
       <div className={clsx("grid gap-5 px-5", !isLocked ? "w-full grid-cols-1 lg:grid-cols-3" : "grid-cols-3")}>
         {combatStyles.map(style => {
           const name = CombatStyle[style];
@@ -254,10 +256,10 @@ function Masteries({ userSelections, toggle, show, setShow, isLocked }: Masterie
           const level = userSelections.combatMasteries.find(m => m.style === style)?.level ?? 0;
           const hideClass = isLocked ? "hidden" : "opacity-20";
           return <div key={name} className={clsx("flex flex-col items-center", isLocked && level == 0 && hideClass)}>
-            <div className="font-bold">{name}</div>
+            <a className="font-bold" {...wikiLinkProps('Raging Echoes League/Combat Masteries#' + name)}>{name}</a>
             <div className="flex flex-row gap-3">
               {combatMasteries.filter(x => x.style === style).map(x => {
-                return <button key={x.name} className={clsx("flex flex-col min-w-8", hasCombatMastery && (x.level > level || (isLocked && x.level < level)) ? hideClass : "")} onClick={() => toggle(x)}>
+                return <button key={x.name} className={clsx("flex flex-col min-w-8", hasCombatMastery && (x.level > level || (isLocked && x.level < level)) ? hideClass : "")} onClick={e => { e.preventDefault(); toggle(x) }}>
                   <img src={x.image} alt={x.name} className="w-8" />
                   <div className="mt-[-1rem] text-shadow font-bold">{x.name.split(" ")[1]}</div>
                 </button>
@@ -277,7 +279,7 @@ function Relics({ userSelections, toggle, show, setShow, isLocked, setIsLocked, 
   {/* relics */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row  items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
-      <div className={clsx("w-max text-nowrap font-semibold text-center pl-5", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging Echoes League/Relics', isWikiActive)}>Relics</div>
+      <a className={clsx("w-max text-nowrap font-semibold text-center pl-5", wikiPointer(isWikiActive))} {...wikiLinkProps('Raging Echoes League/Relics')}>Relics</a>
       <div className={clsx("flex flex-row flex-wrap w-full px-5", isLocked ? "justify-start" : "justify-around")}>
         {[...new Set([...relics.map(x => x.order).sort((a, b) => a - b)])].map(order => {
           const tierName = relics.find(x => x.order === order)?.tier;
@@ -288,7 +290,7 @@ function Relics({ userSelections, toggle, show, setShow, isLocked, setIsLocked, 
               {relics.filter(x => x.order === order).map(relic => {
                 const isSelected = userSelections.relics.find(x => x.code === relic.code);
                 const hideClass = isLocked ? "hidden" : "opacity-30";
-                return <button key={relic.code} className={clsx("flex flex-col gap-2 w-24 items-center justify-center", tierSelections.length > 0 && !isSelected && hideClass)} onClick={_ => toggle(relic)}>
+                return <button key={relic.code} className={clsx("flex flex-col gap-2 w-24 items-center justify-center", tierSelections.length > 0 && !isSelected && hideClass)} onClick={e => { e.preventDefault(); toggle(relic) }}>
                   {relic.image?.length > 0 && <img src={relic.image} alt={relic.name} className="w-14" />}
                   {relic.image.length == 0 && <div className="w-14 h-14"></div>}
                   <div className="mt-[-2rem] text-shadow w-full font-bold">{relic.name}</div>
@@ -337,14 +339,14 @@ function DisplaySettingsToolbar({ displaySettings, setDisplaySettings }: UsesDis
     <ImageToggleButton show={displaySettings.bosses} setShow={x => setDisplaySettings({ bosses: x })}>
       <div className="text-xs">💀</div>
     </ImageToggleButton>
-    <ImageToggleButton show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })}>
-      <img src={images["teleports"]} className="w-4 h-4" />
-    </ImageToggleButton>
     <ImageToggleButton show={displaySettings.slayerMasters} setShow={x => setDisplaySettings({ slayerMasters: x })}>
       <img src={images["slayer"]} className="w-4 h-4" />
     </ImageToggleButton>
     <ImageToggleButton show={displaySettings.minigames} setShow={x => setDisplaySettings({ minigames: x })}>
       <img src={images["minigames"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })}>
+      <img src={images["teleports"]} className="w-4 h-4" />
     </ImageToggleButton>
     <ImageToggleButton show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })}>
       <img src={images["gear"]} className="w-4 h-4" />
@@ -375,9 +377,9 @@ function Skills({ userSelections, show, setShow }: UserSelection & Hideable) {
         if (!activity) return null;
         const pts = activityPoints(activity, userSelections);
         const img = images[x.toLowerCase()];
-        return <div key={x} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(skillColors, pts), wikiPointer(isWikiActive))} onClick={_ => wikiClick(activity, isWikiActive)}>
+        return <a key={x} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(skillColors, pts), wikiPointer(isWikiActive))}  {...wikiLinkProps(activity)}>
           <img src={img} alt={x} className="max-w-8 max-h-8" />
-        </div>
+        </a>
       })}
     </div>
   </div>
@@ -393,9 +395,9 @@ function Spellbooks({ userSelections, show, setShow }: UserSelection & Hideable)
       {spellbooks.map(x => {
         const pts = activityPoints(x, userSelections);
         const image = images[x.name.toLowerCase()]
-        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts), wikiPointer(isWikiActive))} onClick={_ => wikiClick(x.name + " spellbook", isWikiActive)}>
+        return <a key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts), wikiPointer(isWikiActive))} {...wikiLinkProps(x.name + " spellbook")}>
           <img src={image} alt={x.name} className="max-w-10 max-h-10" />
-        </div>
+        </a>
       })}
     </div>
   </div>
@@ -411,9 +413,9 @@ function Prayers({ userSelections, show, setShow }: UserSelection & Hideable) {
       {prayers.map(x => {
         const pts = activityPoints(x, userSelections);
         const image = images[x.name.toLowerCase()]
-        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts), wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>
+        return <a key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts), wikiPointer(isWikiActive))} {...wikiLinkProps(x)}>
           <img src={image} alt={x.name} className="max-w-10 max-h-10" />
-        </div>
+        </a>
       })}
     </div>
   </div>
@@ -429,9 +431,9 @@ function Runes({ userSelections, show, setShow }: UserSelection & Hideable) {
       {runes.map(x => {
         const pts = activityPoints(x, userSelections);
         const image = images[x.name.toLowerCase()]
-        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(runeColors, pts), wikiPointer(isWikiActive))} onClick={_ => wikiClick(x.name + " rune", isWikiActive)}>
+        return <a key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(runeColors, pts), wikiPointer(isWikiActive))} {...wikiLinkProps(x.name + " rune")}>
           <img src={image} alt={x.name} className="max-w-10 max-h-10" />
-        </div>
+        </a>
       })}
     </div>
   </div>
@@ -449,7 +451,7 @@ function Bosses({ userSelections, show, setShow }: UserSelection & Hideable) {
     <div className="text-center">
       {filteredBosses.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
       {[...new Set(filteredBosses.map(x => x.name))].map((x, idx) => <Fragment key={idx}>
-        <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+        <a className={clsx("inline", wikiPointer(isWikiActive))} {...wikiLinkProps(x)}>{x}</a>
         {Separator(idx, filteredBosses)}
       </Fragment>)}
     </div>
@@ -469,10 +471,37 @@ function Teleports({ userSelections, show, setShow }: UserSelection & Hideable) 
     <div className="text-center">
       {filteredTeleports.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
       {[...new Set(filteredTeleports.map(x => x.name))].map((x, idx) => <Fragment key={idx}>
-        <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+        <a className={clsx("inline", wikiPointer(isWikiActive))} {...wikiLinkProps(x)}>{x}</a>
         {Separator(idx, filteredTeleports)}
       </Fragment>)}
     </div>
+  </div>
+}
+
+function NewTeleports({ userSelections, show, setShow }: UserSelection & Hideable) {
+  const { isWikiActive } = useWiki();
+  if (!show) return null;
+  const allTeleports = newTeleports
+    .filter(x => userSelections.relics.find(r => r.cleanName === x.relicCleanName))
+    .filter(x => userSelections.regions.filter(r => x.cleanRegions.includes(r.cleanName)).length === x.regions.length);
+  const categories = [...new Set(allTeleports.map(x => x.category))];
+
+  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full">
+    <h1 className="font-bold text-2xl w-full text-center">Teleports</h1>
+    {categories.map(category => {
+      const filteredTeleports = allTeleports.filter(x => x.category === category)
+      return <div key={category} className="flex flex-row gap-5 items-center justify-left w-full h-full border border-cyan-900">
+        <div className="h-full flex items-center justify-center min-w-20 p-2">
+          <img src={images[category.toLowerCase()]} alt={category} className="max-w-16 max-h-16" />
+        </div>
+        <div className="p-2 w-full h-full text-center border-cyan-900 border-l">
+          {filteredTeleports.map((x, idx) => <Fragment key={idx}>
+            <a className={clsx("inline", wikiPointer(isWikiActive))} {...wikiLinkProps(x.wikiLink)}>{x.location}</a>
+            {Separator(idx, filteredTeleports)}
+          </Fragment>)}
+        </div>
+      </div>
+    })}
   </div>
 }
 
@@ -499,7 +528,7 @@ function Gear({ userSelections, show, setShow }: UserSelection & Hideable) {
                       <div className="font-bold text-center">{GearTier[tier]}</div>
                       <div className="flex flex-row gap-1 flex-wrap text-center w-full">
                         {filteredGear.map((x, idx) => <Fragment key={idx}>
-                          <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+                          <a className={clsx("inline", wikiPointer(isWikiActive))} {...wikiLinkProps(x)}>{x}</a>
                           {Separator(idx, filteredGear)}
                         </Fragment>)}
                         {filteredGear.length === 0 && <div className="text-gray-500 italic">None</div>}
@@ -526,7 +555,7 @@ function SlayerMasters({ userSelections, show, setShow }: UserSelection & Hideab
     <div className="text-center">
       {filteredSlayerMasters.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
       {[...new Set(filteredSlayerMasters.map(x => x.name))].map((x, idx) => <Fragment key={idx}>
-        <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+        <a className={clsx("inline", wikiPointer(isWikiActive))} {...wikiLinkProps(x)}>{x}</a>
         {Separator(idx, filteredSlayerMasters)}
       </Fragment>)}
     </div>
@@ -538,17 +567,17 @@ function Minigames({ userSelections, show, setShow }: UserSelection & Hideable) 
   if (!show) return null;
   {/* minigames */ }
   const filteredMinigames = minigames.filter(x => activityPoints(x, userSelections)).sort((a, b) => a.name.localeCompare(b.name));
-  return <div className={clsx("border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full md:max-w-xl flex flex-col", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging_Echoes_League#Boosted_minigame_points', isWikiActive)}>
+  return <a className={clsx("border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full md:max-w-xl flex flex-col", wikiPointer(isWikiActive))} {...wikiLinkProps('Raging_Echoes_League#Boosted_minigame_points')}>
     <h1 className="font-bold text-2xl w-full text-center">Boosted Minigames</h1>
     <div className="text-gray-500 italic text-center w-full">All of these minigames have boosted rewards.<br />Minigame Reward Rates: 4x at Tier 1, 8x at Tier 4</div>
     <div className="text-center">
       {filteredMinigames.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
       {[...new Set(filteredMinigames.map(x => x.name))].join(" | ")}
     </div>
-  </div>
+  </a>
 }
 
-function WikiButton() {
+function WikiButton({ displaySettings, setDisplaySettings }: UsesDisplaySettings) {
   const { isWikiActive, setIsWikiActive } = useWiki();
   return <div className="fixed bottom-0 right-0" title="Hold Shift and click on an item to open it on the OSRS Wiki.">
     <button className={clsx("w-14 h-14 m-4 rounded-3xl bg-black border-2 p-1 flex justify-center items-center", isWikiActive ? "border-green-800" : "border-stone-700 ")} onClick={_ => setIsWikiActive(!isWikiActive)}>
@@ -558,8 +587,8 @@ function WikiButton() {
 }
 
 function Attribution() {
-  return <div className="fixed bottom-0 left-0 p-1 h-10 bg-black px-2">
-    Some data was originally sourced from <a className="underline" href="https://www.reddit.com/r/2007scape/comments/1guzfo9/leagues_5_planning_sheet/" target="_blank">this spreadsheet</a>. Check it out.
+  return <div className="fixed bottom-0 left-0 p-1 h-10 bg-black px-2 rounded-sm">
+    Some data was originally sourced from <a className="underline" href="https://np.reddit.com/r/2007scape/comments/1guzfo9/leagues_5_planning_sheet/" target="_blank">this spreadsheet</a>.
   </div>
 }
 
