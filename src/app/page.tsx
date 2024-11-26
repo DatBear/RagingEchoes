@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Region, { regions } from "~/data/model/Region";
 import CombatMastery, { combatMasteries } from "~/data/model/CombatMastery";
@@ -13,6 +13,7 @@ import { activities, activityPoints, bosses, cleanName, prayers, runes, spellboo
 import { CombatStyle, GearSlot, GearTier, combatStyles, filterGear, gear, gearSlots, gearTiers } from "~/data/model/Gear";
 import images from "~/data/model/Images";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
+import DisplaySettings, { defaultDisplaySettings } from "~/data/model/DisplaySettings";
 
 const runeColors: Record<number, string> = {
   0: "bg-red-700",
@@ -47,10 +48,28 @@ export default function HomePage() {
   const pathname = usePathname();
 
   const [userSelections, setUserSelections] = useState<UserSelections>(SelectionsFromRoute(getSlug(pathname)));
-  const [showRegions, setShowRegions] = useLocalStorage("showRegions", true);
-  const [showMasteries, setShowMasteries] = useLocalStorage("showMasteries", true);
-  const [showRelics, setShowRelics] = useLocalStorage("showRelics", true);
   const [isLocked, setIsLocked] = useLocalStorage("isLocked", false);
+  const [_displaySettings, _setDisplaySettings] = useLocalStorage<Partial<DisplaySettings>>("displaySettings", defaultDisplaySettings);
+
+  const displaySettings: DisplaySettings = _displaySettings as DisplaySettings;
+  Object.entries(defaultDisplaySettings)
+    .map(x => ([x[0] as keyof DisplaySettings, x[1]] as const))
+    .forEach(([key, value]) => {
+      if (_displaySettings[key] === undefined) {
+        _displaySettings[key] = value;
+      }
+    });
+
+  const setDisplaySettings = (partialSettings: Partial<DisplaySettings>) => {
+    Object.entries(partialSettings)
+      .map(x => ([x[0] as keyof DisplaySettings, x[1]] as const))
+      .forEach(([key, value]) => {
+        if (partialSettings[key] !== undefined) {
+          _displaySettings[key] = value;
+        }
+      });
+    _setDisplaySettings({ ..._displaySettings });
+  }
 
   const hasSelections = () => {
     return userSelections.regions.length > 0 || userSelections.combatMasteries.length > 0 || userSelections.relics.length > 0;
@@ -133,11 +152,11 @@ export default function HomePage() {
   }, [pathname]);
 
   return <div className="w-full h-full text-white flex flex-col select-none min-h-screen">
-    <Regions userSelections={userSelections} toggle={toggleRegion} show={showRegions} setShow={setShowRegions} isLocked={isLocked} />
-    <Masteries userSelections={userSelections} toggle={toggleCombatMastery} show={showMasteries} setShow={setShowMasteries} isLocked={isLocked} />
-    <Relics userSelections={userSelections} toggle={toggleRelic} show={showRelics} setShow={setShowRelics} isLocked={isLocked} toggleLock={setIsLocked} />
+    <Regions userSelections={userSelections} toggle={toggleRegion} show={displaySettings.regions} setShow={x => setDisplaySettings({ regions: x })} isLocked={isLocked} />
+    <Masteries userSelections={userSelections} toggle={toggleCombatMastery} show={displaySettings.masteries} setShow={x => setDisplaySettings({ masteries: x })} isLocked={isLocked} />
+    <Relics userSelections={userSelections} toggle={toggleRelic} show={displaySettings.relics} setShow={x => setDisplaySettings({ relics: x })} isLocked={isLocked} setIsLocked={setIsLocked} displaySettings={displaySettings} setDisplaySettings={setDisplaySettings} />
 
-    {!hasSelections() && <>
+    {/* {!hasSelections() && <>
       <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 max-w-xl place-self-center">
         <h1 className="w-full text-center text-2xl">Raging Echoes League Planner</h1>
         <div className="w-full text-center">
@@ -145,23 +164,21 @@ export default function HomePage() {
           Select your regions, combat masteries, and relics above to get started.
         </div>
       </div>
-    </>}
+    </>} */}
     {hasSelections() && <>
-      <div className="spacer h-2"></div>
+      <div className={displaySettings.regions || displaySettings.masteries || displaySettings.relics ? "spacer h-2" : "h-6"}></div>
       <div className="flex flex-row flex-wrap items-center justify-around">
-        <Skills userSelections={userSelections} />
-        <Spellbooks userSelections={userSelections} />
-        <Prayers userSelections={userSelections} />
-        <Runes userSelections={userSelections} />
-        <Bosses userSelections={userSelections} />
-        <Teleports userSelections={userSelections} />
+        <Skills userSelections={userSelections} show={displaySettings.skills} setShow={x => setDisplaySettings({ skills: x })} />
+        <Spellbooks userSelections={userSelections} show={displaySettings.spellbooks} setShow={x => setDisplaySettings({ spellbooks: x })} />
+        <Prayers userSelections={userSelections} show={displaySettings.prayers} setShow={x => setDisplaySettings({ prayers: x })} />
+        <Runes userSelections={userSelections} show={displaySettings.runes} setShow={x => setDisplaySettings({ runes: x })} />
+        <Bosses userSelections={userSelections} show={displaySettings.bosses} setShow={x => setDisplaySettings({ bosses: x })} />
+        <Teleports userSelections={userSelections} show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })} />
       </div>
-      <Gear userSelections={userSelections} />
-
+      <Gear userSelections={userSelections} show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })} />
     </>}
 
     <div className="flex flex-grow"></div>
-    <Coffee />
   </div>
 }
 
@@ -180,10 +197,15 @@ type Lockable = {
 }
 
 type Unlockable = {
-  toggleLock: (locked: boolean) => void;
+  setIsLocked: (locked: boolean) => void;
 }
 
-type RegionsProps = Toggleable<Region> & UserSelectionProps & Hideable & Lockable;
+type UsesDisplaySettings = {
+  displaySettings: DisplaySettings;
+  setDisplaySettings: (settings: Partial<DisplaySettings>) => void;
+}
+
+type RegionsProps = Toggleable<Region> & UserSelection & Hideable & Lockable;
 function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsProps) {
   {/* regions */ }
   return <div className={"relative"}>
@@ -203,15 +225,11 @@ function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsPro
           </button>
         })}
       </div>
-
     </div>
-    <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1 right-4", show ? "bottom-[-10px]" : "")} onClick={_ => setShow(!show)}>
-      {show ? "x" : "v"}
-    </button>
   </div>
 }
 
-type MasteriesProps = Toggleable<CombatMastery> & UserSelectionProps & Hideable & Lockable;
+type MasteriesProps = Toggleable<CombatMastery> & UserSelection & Hideable & Lockable;
 function Masteries({ userSelections, toggle, show, setShow, isLocked }: MasteriesProps) {
   {/* combat masteries */ }
   return <div className="relative">
@@ -237,14 +255,12 @@ function Masteries({ userSelections, toggle, show, setShow, isLocked }: Masterie
         })}
       </div>
     </div>
-    <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1 right-10", show ? "bottom-[-10px]" : "")} onClick={_ => setShow(!show)}>
-      {show ? "x" : "v"}
-    </button>
   </div >
 }
 
-type RelicsProps = Toggleable<Relic> & UserSelectionProps & Hideable & Lockable & Unlockable;
-function Relics({ userSelections, toggle, show, setShow, isLocked, toggleLock }: RelicsProps) {
+type RelicsProps = Toggleable<Relic> & UserSelection & Hideable & Lockable & Unlockable & UsesDisplaySettings;
+function Relics({ userSelections, toggle, show, setShow, isLocked, setIsLocked, displaySettings, setDisplaySettings }: RelicsProps) {
+  const toolbarClass = displaySettings.regions || displaySettings.masteries || displaySettings.relics ? "bottom-[-10px]" : "my-2";
   {/* relics */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row  items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
@@ -270,69 +286,70 @@ function Relics({ userSelections, toggle, show, setShow, isLocked, toggleLock }:
         })}
       </div>
     </div>
-    <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1 right-16", show ? "bottom-[-10px]" : "")} onClick={_ => setShow(!show)}>
-      {show ? "x" : "v"}
-    </button>
-    <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1", show ? "bottom-[-10px]" : "")} onClick={_ => toggleLock(!isLocked)}>
+    <button className={clsx("flex items-center justify-center absolute z-10 bg-cyan-700 rounded-md px-1 ml-1", toolbarClass)} onClick={_ => setIsLocked(!isLocked)}>
       {isLocked ? "🔒" : "🔓"}
     </button>
+    <div className={clsx("flex flex-row left-10 absolute z-10 w-max gap-0.5", toolbarClass)}>
+      <DisplaySettingsToolbar displaySettings={displaySettings} setDisplaySettings={setDisplaySettings} />
+    </div>
+
   </div>
 }
 
 
-type UserSelectionProps = {
+function DisplaySettingsToolbar({ displaySettings, setDisplaySettings }: UsesDisplaySettings) {
+  return <>
+    <ImageToggleButton show={displaySettings.regions} setShow={x => setDisplaySettings({ regions: x })}>
+      <img src={images["regions"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.masteries} setShow={x => setDisplaySettings({ masteries: x })}>
+      <img src={images["masteries"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.relics} setShow={x => setDisplaySettings({ relics: x })}>
+      <img src={images["relics"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <div className="w-2"></div>
+    <ImageToggleButton show={displaySettings.skills} setShow={x => setDisplaySettings({ skills: x })}>
+      <img src={images["skills"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.spellbooks} setShow={x => setDisplaySettings({ spellbooks: x })}>
+      <img src={images["spellbooks"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.prayers} setShow={x => setDisplaySettings({ prayers: x })}>
+      <img src={images["prayers"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.runes} setShow={x => setDisplaySettings({ runes: x })}>
+      <img src={images["runes"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.bosses} setShow={x => setDisplaySettings({ bosses: x })}>
+      <img src={images["bosses"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })}>
+      <img src={images["teleports"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })}>
+      <img src={images["gear"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    {/* <ImageToggleButton show={displaySettings.coffee} setShow={x => setDisplaySettings({ coffee: x })}>
+      <div className="text-xs">☕</div>
+    </ImageToggleButton> */}
+  </>
+}
+
+function ImageToggleButton({ children, show, setShow }: PropsWithChildren<Hideable>) {
+  const hideClass = show ? "bg-cyan-700" : "bg-red-700";
+  return <button className={clsx("flex items-center justify-center rounded-md p-1", hideClass)} onClick={_ => setShow(!show)}>
+    {children}
+  </button>
+}
+
+type UserSelection = {
   userSelections: UserSelections;
 }
 
-function Spellbooks({ userSelections }: UserSelectionProps) {
-  {/* spellbooks */ }
-  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-max">
-    <h1 className="font-bold text-2xl w-full text-center">Spellbooks</h1>
-    <div className="flex flex-row gap-4 items-center justify-center h-full">
-      {spellbooks.map(x => {
-        const pts = activityPoints(x, userSelections);
-        const image = images[x.name.toLowerCase()]
-        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts))}>
-          <img src={image} alt={x.name} className="max-w-10 max-h-10" />
-        </div>
-      })}
-    </div>
-  </div>
-}
-function Prayers({ userSelections }: UserSelectionProps) {
-  {/* prayers */ }
-  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-max">
-    <h1 className="font-bold text-2xl w-full text-center">Prayers</h1>
-    <div className="flex flex-row gap-4 items-center justify-center h-full">
-      {prayers.map(x => {
-        const pts = activityPoints(x, userSelections);
-        const image = images[x.name.toLowerCase()]
-        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts))}>
-          <img src={image} alt={x.name} className="max-w-10 max-h-10" />
-        </div>
-      })}
-    </div>
-  </div>
-}
-
-function Runes({ userSelections }: UserSelectionProps) {
-  {/* runes */ }
-  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-max">
-    <h1 className="font-bold text-2xl w-full text-center">Runes</h1>
-    <div className="flex flex-row gap-4 items-center justify-center h-full">
-      {runes.map(x => {
-        const pts = activityPoints(x, userSelections);
-        const image = images[x.name.toLowerCase()]
-        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(runeColors, pts))}>
-          <img src={image} alt={x.name} className="max-w-10 max-h-10" />
-        </div>
-      })}
-    </div>
-  </div>
-}
-
-function Skills({ userSelections }: UserSelectionProps) {
+function Skills({ userSelections, show, setShow }: UserSelection & Hideable) {
   {/* skills */ }
+  if (!show) return null;
   return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full lg:max-w-96">
     <h1 className="font-bold text-2xl w-full text-center">Skills</h1>
     <div className="flex flex-row gap-4 items-center justify-center h-full flex-wrap">
@@ -349,8 +366,62 @@ function Skills({ userSelections }: UserSelectionProps) {
   </div>
 }
 
-function Bosses({ userSelections }: UserSelectionProps) {
+function Spellbooks({ userSelections, show, setShow }: UserSelection & Hideable) {
+  {/* spellbooks */ }
+  if (!show) return null;
+  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-max">
+    <h1 className="font-bold text-2xl w-full text-center">Spellbooks</h1>
+    <div className="flex flex-row gap-4 items-center justify-center h-full">
+      {spellbooks.map(x => {
+        const pts = activityPoints(x, userSelections);
+        const image = images[x.name.toLowerCase()]
+        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts))}>
+          <img src={image} alt={x.name} className="max-w-10 max-h-10" />
+        </div>
+      })}
+    </div>
+  </div>
+}
+
+function Prayers({ userSelections, show, setShow }: UserSelection & Hideable) {
+  {/* prayers */ }
+  if (!show) return null;
+  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-max">
+    <h1 className="font-bold text-2xl w-full text-center">Prayers</h1>
+    <div className="flex flex-row gap-4 items-center justify-center h-full">
+      {prayers.map(x => {
+        const pts = activityPoints(x, userSelections);
+        const image = images[x.name.toLowerCase()]
+        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(prayerColors, pts))}>
+          <img src={image} alt={x.name} className="max-w-10 max-h-10" />
+        </div>
+      })}
+    </div>
+  </div>
+}
+
+function Runes({ userSelections, show, setShow }: UserSelection & Hideable) {
+  {/* runes */ }
+  if (!show) return null;
+  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-max">
+    <h1 className="font-bold text-2xl w-full text-center">Runes</h1>
+    <div className="flex flex-row gap-4 items-center justify-center h-full">
+      {runes.map(x => {
+        const pts = activityPoints(x, userSelections);
+        const image = images[x.name.toLowerCase()]
+        return <div key={x.name} className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(runeColors, pts))}>
+          <img src={image} alt={x.name} className="max-w-10 max-h-10" />
+        </div>
+      })}
+    </div>
+  </div>
+}
+
+
+
+function Bosses({ userSelections, show, setShow }: UserSelection & Hideable) {
   {/* bosses */ }
+  if (!show) return null;
   const filteredBosses = bosses.filter(x => activityPoints(x, userSelections)).sort((a, b) => a.name.localeCompare(b.name));
   return <div className="border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full md:max-w-xl flex flex-col">
     <h1 className="font-bold text-2xl w-full text-center">Bosses</h1>
@@ -361,7 +432,8 @@ function Bosses({ userSelections }: UserSelectionProps) {
   </div>
 }
 
-function Teleports({ userSelections }: UserSelectionProps) {
+function Teleports({ userSelections, show, setShow }: UserSelection & Hideable) {
+  if (!show) return null;
   {/* teleports */ }
   const filteredTeleports = Object.entries(teleports)
     .filter(x => userSelections.relics.find(r => r.code === x[0])).flatMap(x => x[1])
@@ -376,8 +448,9 @@ function Teleports({ userSelections }: UserSelectionProps) {
   </div>
 }
 
-function Gear({ userSelections }: UserSelectionProps) {
+function Gear({ userSelections, show, setShow }: UserSelection & Hideable) {
   {/* gear */ }
+  if (!show) return null;
   return <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-0 mb-10">
     {gearSlots.map(slot => {
       const slotImg = images[GearSlot[slot].toLowerCase()];
@@ -413,8 +486,8 @@ function Gear({ userSelections }: UserSelectionProps) {
 
 function Coffee() {
   return <div className="w-full text-center my-5 flex flex-col items-center justify-center">
-    <div>Loving this website?</div>
-    <a className="py-2 px-2 bg-cyan-900 rounded-md w-max" href="https://buymeacoffee.com/themrgecko?utm_source=ragingechoes.com" target="_blank"> ☕Buy me a coffee</a>
+    <div>Enjoying this website?</div>
+    <a className="py-2 px-2 bg-cyan-900 rounded-md w-max" href="https://buymeacoffee.com/datbear?utm_source=ragingechoes.com" target="_blank"> ☕Buy me a coffee</a>
   </div>
 }
 
