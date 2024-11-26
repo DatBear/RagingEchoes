@@ -4,7 +4,7 @@ import Activity from "~/data/model/Activity";
 const baseWikiUrl = 'https://oldschool.runescape.wiki/w/';
 
 const openWiki = (name: string) => {
-  const url = baseWikiUrl + name.replace(' ', '_');
+  const url = baseWikiUrl + name.replaceAll(' ', '_');
   window.open(url, "_wiki");
 }
 

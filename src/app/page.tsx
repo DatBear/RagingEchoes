@@ -1,5 +1,5 @@
 "use client";
-import { PropsWithChildren, ReactElement, useEffect, useState } from "react";
+import { Fragment, PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Region, { regions } from "~/data/model/Region";
 import CombatMastery, { combatMasteries } from "~/data/model/CombatMastery";
@@ -79,7 +79,7 @@ export default function HomePage() {
   }
 
   const toggleRegion = (region: Region) => {
-    if (wikiClick(region.name, isWikiActive)) return;
+    if (wikiClick('Raging Echoes League/Areas/' + region.name, isWikiActive)) return;
     const hasRegion = userSelections.regions.find(x => x.name === region.name);
     const orders = new Array(3).fill(null).map((_, i) => i + 1);
     const order = orders.find(x => !userSelections.regions.find(r => r.order === x)) ?? 1;
@@ -186,8 +186,9 @@ export default function HomePage() {
       <Gear userSelections={userSelections} show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })} />
     </>}
 
-    <div className="flex flex-grow"></div>
+    <div className="flex flex-grow m-3"></div>
     <WikiButton />
+    <Attribution />
   </div>
 }
 
@@ -216,10 +217,11 @@ type UsesDisplaySettings = {
 
 type RegionsProps = Toggleable<Region> & UserSelection & Hideable & Lockable;
 function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsProps) {
+  const { isWikiActive } = useWiki();
   {/* regions */ }
   return <div className={"relative"}>
     <div className={clsx("w-full flex flex-row bg-slate-900 items-center py-4 border-b-4 border-cyan-600", !show && "hidden")}>
-      <div className="w-max text-nowrap font-semibold text-center pl-5">Regions</div>
+      <div className={clsx("w-max text-nowrap font-semibold text-center pl-5", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging Echoes League/Areas', isWikiActive)}>Regions</div>
       <div className="grid grid-cols-3 lg:grid-cols-9 justify-between items-center w-full px-10 min-w-max">
         {regions.filter(x => !x.default && !x.hidden).sort((a, b) => isLocked ? (userSelections.regions.find(x => x.code === a.code)?.order ?? 0) - (userSelections.regions.find(x => x.code === b.code)?.order ?? 0) : 0).map(x => {
           const order = userSelections.regions.find(r => r.code === x.code)?.order;
@@ -240,10 +242,11 @@ function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsPro
 
 type MasteriesProps = Toggleable<CombatMastery> & UserSelection & Hideable & Lockable;
 function Masteries({ userSelections, toggle, show, setShow, isLocked }: MasteriesProps) {
+  const { isWikiActive } = useWiki();
   {/* combat masteries */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
-      <div className="w-max text-nowrap font-semibold pl-5 text-center">Combat <br />Masteries</div>
+      <div className={clsx("w-max text-nowrap font-semibold pl-5 text-center", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging Echoes League/Combat Masteries', isWikiActive)}>Combat <br />Masteries</div>
       <div className={clsx("grid gap-5 px-5", !isLocked ? "w-full grid-cols-1 lg:grid-cols-3" : "grid-cols-3")}>
         {combatStyles.map(style => {
           const name = CombatStyle[style];
@@ -269,11 +272,12 @@ function Masteries({ userSelections, toggle, show, setShow, isLocked }: Masterie
 
 type RelicsProps = Toggleable<Relic> & UserSelection & Hideable & Lockable & Unlockable & UsesDisplaySettings;
 function Relics({ userSelections, toggle, show, setShow, isLocked, setIsLocked, displaySettings, setDisplaySettings }: RelicsProps) {
+  const { isWikiActive } = useWiki();
   const toolbarClass = displaySettings.regions || displaySettings.masteries || displaySettings.relics ? "bottom-[-10px]" : "my-2";
   {/* relics */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row  items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
-      <div className="w-max text-nowrap font-semibold text-center pl-5">Relics</div>
+      <div className={clsx("w-max text-nowrap font-semibold text-center pl-5", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging Echoes League/Relics', isWikiActive)}>Relics</div>
       <div className={clsx("flex flex-row flex-wrap w-full px-5", isLocked ? "justify-start" : "justify-around")}>
         {[...new Set([...relics.map(x => x.order).sort((a, b) => a - b)])].map(order => {
           const tierName = relics.find(x => x.order === order)?.tier;
@@ -336,14 +340,14 @@ function DisplaySettingsToolbar({ displaySettings, setDisplaySettings }: UsesDis
     <ImageToggleButton show={displaySettings.teleports} setShow={x => setDisplaySettings({ teleports: x })}>
       <img src={images["teleports"]} className="w-4 h-4" />
     </ImageToggleButton>
-    <ImageToggleButton show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })}>
-      <img src={images["gear"]} className="w-4 h-4" />
-    </ImageToggleButton>
     <ImageToggleButton show={displaySettings.slayerMasters} setShow={x => setDisplaySettings({ slayerMasters: x })}>
       <img src={images["slayer"]} className="w-4 h-4" />
     </ImageToggleButton>
     <ImageToggleButton show={displaySettings.minigames} setShow={x => setDisplaySettings({ minigames: x })}>
       <img src={images["minigames"]} className="w-4 h-4" />
+    </ImageToggleButton>
+    <ImageToggleButton show={displaySettings.gear} setShow={x => setDisplaySettings({ gear: x })}>
+      <img src={images["gear"]} className="w-4 h-4" />
     </ImageToggleButton>
   </>
 }
@@ -360,9 +364,8 @@ type UserSelection = {
 }
 
 function Skills({ userSelections, show, setShow }: UserSelection & Hideable) {
-  const { isWikiActive } = useWiki();
-
   {/* skills */ }
+  const { isWikiActive } = useWiki();
   if (!show) return null;
   return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full lg:max-w-96">
     <h1 className="font-bold text-2xl w-full text-center">Skills</h1>
@@ -438,18 +441,23 @@ function Runes({ userSelections, show, setShow }: UserSelection & Hideable) {
 
 function Bosses({ userSelections, show, setShow }: UserSelection & Hideable) {
   {/* bosses */ }
+  const { isWikiActive } = useWiki();
   if (!show) return null;
   const filteredBosses = bosses.filter(x => activityPoints(x, userSelections)).sort((a, b) => a.name.localeCompare(b.name));
   return <div className="border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full md:max-w-xl flex flex-col">
     <h1 className="font-bold text-2xl w-full text-center">Bosses</h1>
     <div className="text-center">
       {filteredBosses.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
-      {filteredBosses.map(x => x.name).join(" | ")}
+      {[...new Set(filteredBosses.map(x => x.name))].map((x, idx) => <Fragment key={idx}>
+        <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+        {Separator(idx, filteredBosses)}
+      </Fragment>)}
     </div>
   </div>
 }
 
 function Teleports({ userSelections, show, setShow }: UserSelection & Hideable) {
+  const { isWikiActive } = useWiki();
   if (!show) return null;
   {/* teleports */ }
   const filteredTeleports = Object.entries(teleports)
@@ -460,13 +468,17 @@ function Teleports({ userSelections, show, setShow }: UserSelection & Hideable) 
     <h1 className="font-bold text-2xl w-full text-center">Teleports</h1>
     <div className="text-center">
       {filteredTeleports.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
-      {[...new Set(filteredTeleports.map(x => x.name))].join(" | ")}
+      {[...new Set(filteredTeleports.map(x => x.name))].map((x, idx) => <Fragment key={idx}>
+        <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+        {Separator(idx, filteredTeleports)}
+      </Fragment>)}
     </div>
   </div>
 }
 
 function Gear({ userSelections, show, setShow }: UserSelection & Hideable) {
   {/* gear */ }
+  const { isWikiActive } = useWiki();
   if (!show) return null;
   return <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-0 mb-10">
     {gearSlots.map(slot => {
@@ -480,13 +492,16 @@ function Gear({ userSelections, show, setShow }: UserSelection & Hideable) {
               <img src={styleImg} alt={CombatStyle[style]} className="w-8 h-8" />
               <div className="grid grid-rows-3 w-full">
                 {gearTiers.map(tier => {
-                  const filteredGear = gear.filter(x => filterGear(x, slot, tier, style))
-                    .filter(x => userSelections.regions.find(r => cleanName(r.name) === cleanName(x.region)));
+                  const filteredGear = [...new Set(gear.filter(x => filterGear(x, slot, tier, style))
+                    .filter(x => userSelections.regions.find(r => cleanName(r.name) === cleanName(x.region))).map(x => x.name))];
                   return <div key={tier}>
                     <div className="flex flex-row gap-5 p-2 border border-cyan-900 h-full justify-start items-center">
                       <div className="font-bold text-center">{GearTier[tier]}</div>
-                      <div className="flex flex-row gap-1 flex-wrap justify-around w-full">
-                        {[...new Set(filteredGear.map(x => x.name).sort((a, b) => a.localeCompare(b)))].join(" | ")}
+                      <div className="flex flex-row gap-1 flex-wrap text-center w-full">
+                        {filteredGear.map((x, idx) => <Fragment key={idx}>
+                          <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+                          {Separator(idx, filteredGear)}
+                        </Fragment>)}
                         {filteredGear.length === 0 && <div className="text-gray-500 italic">None</div>}
                       </div>
                     </div>
@@ -502,6 +517,7 @@ function Gear({ userSelections, show, setShow }: UserSelection & Hideable) {
 }
 
 function SlayerMasters({ userSelections, show, setShow }: UserSelection & Hideable) {
+  const { isWikiActive } = useWiki();
   if (!show) return null;
   {/* slayer masters */ }
   const filteredSlayerMasters = slayerMasters.filter(x => activityPoints(x, userSelections)).sort((a, b) => a.name.localeCompare(b.name));
@@ -509,31 +525,41 @@ function SlayerMasters({ userSelections, show, setShow }: UserSelection & Hideab
     <h1 className="font-bold text-2xl w-full text-center">Slayer Masters</h1>
     <div className="text-center">
       {filteredSlayerMasters.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
-      {[...new Set(filteredSlayerMasters.map(x => x.name))].join(" | ")}
+      {[...new Set(filteredSlayerMasters.map(x => x.name))].map((x, idx) => <Fragment key={idx}>
+        <span className={clsx("inline", wikiPointer(isWikiActive))} onClick={_ => wikiClick(x, isWikiActive)}>{x}</span>
+        {Separator(idx, filteredSlayerMasters)}
+      </Fragment>)}
     </div>
   </div>
 }
 
 function Minigames({ userSelections, show, setShow }: UserSelection & Hideable) {
+  const { isWikiActive } = useWiki();
   if (!show) return null;
   {/* minigames */ }
   const filteredMinigames = minigames.filter(x => activityPoints(x, userSelections)).sort((a, b) => a.name.localeCompare(b.name));
-  return <div className="border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full md:max-w-xl flex flex-col">
-    <h1 className="font-bold text-2xl w-full text-center">Minigames</h1>
+  return <div className={clsx("border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full md:max-w-xl flex flex-col", wikiPointer(isWikiActive))} onClick={_ => wikiClick('Raging_Echoes_League#Boosted_minigame_points', isWikiActive)}>
+    <h1 className="font-bold text-2xl w-full text-center">Boosted Minigames</h1>
+    <div className="text-gray-500 italic text-center w-full">All of these minigames have boosted rewards.<br />Minigame Reward Rates: 4x at Tier 1, 8x at Tier 4</div>
     <div className="text-center">
       {filteredMinigames.length === 0 && <div className="text-gray-500 italic text-center w-full">None</div>}
       {[...new Set(filteredMinigames.map(x => x.name))].join(" | ")}
     </div>
-    <div className="text-gray-500 italic text-center w-full">Minigame Reward Rates: 4x at Tier 1, 8x at Tier 4</div>
   </div>
 }
 
 function WikiButton() {
   const { isWikiActive, setIsWikiActive } = useWiki();
-  return <div className="fixed bottom-0 right-0">
-    <button className={clsx("w-14 h-14 m-4 rounded-3xl bg-black border-2 p-1 flex justify-center items-center", isWikiActive ? "border-green-800" : "border-black ")} onClick={_ => setIsWikiActive(!isWikiActive)}>
+  return <div className="fixed bottom-0 right-0" title="Hold Shift and click on an item to open it on the OSRS Wiki.">
+    <button className={clsx("w-14 h-14 m-4 rounded-3xl bg-black border-2 p-1 flex justify-center items-center", isWikiActive ? "border-green-800" : "border-stone-700 ")} onClick={_ => setIsWikiActive(!isWikiActive)}>
       <img src={images["wiki"]} alt={"OSRS Wiki"} />
     </button>
+  </div>
+}
+
+function Attribution() {
+  return <div className="fixed bottom-0 left-0 p-1 h-10 bg-black px-2">
+    Some data was originally sourced from <a className="underline" href="https://www.reddit.com/r/2007scape/comments/1guzfo9/leagues_5_planning_sheet/" target="_blank">this spreadsheet</a>. Check it out.
   </div>
 }
 
@@ -544,3 +570,6 @@ function Coffee() {
   </div>
 }
 
+function Separator(idx: number, array: { length: number }) {
+  return idx + 1 < array.length ? " | " : "";
+}

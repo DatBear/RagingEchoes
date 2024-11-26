@@ -1,28 +1,29 @@
 import UserSelections from "./UserSelections";
 
-import rawActivities from "~/data/generated/rankingsheet.json";
-const activities = rawActivities as unknown as Activity[];
+import rawActivities from "~/data/generated/skills.json";
+const activities = (rawActivities as unknown as Activity[]).map(processRawActivity);
+
 import rawBosses from "~/data/generated/bosses.json";
-const bosses = rawBosses as unknown as Activity[];
+const bosses = (rawBosses as unknown as Activity[]).map(processRawActivity);
 import rawRunes from "~/data/generated/runes.json";
-const runes = rawRunes as unknown as Activity[];
+const runes = (rawRunes as unknown as Activity[]).map(processRawActivity);
 import rawPrayers from "~/data/generated/prayers.json";
-const prayers = rawPrayers as unknown as Activity[];
+const prayers = (rawPrayers as unknown as Activity[]).map(processRawActivity);
 import rawSpellbooks from "~/data/generated/spellbooks.json";
-const spellbooks = rawSpellbooks as unknown as Activity[];
+const spellbooks = (rawSpellbooks as unknown as Activity[]).map(processRawActivity);
 
 import rawFaFlTeleports from "~/data/generated/teleports/FaFl.json";
-const FaFlTeleports = rawFaFlTeleports as unknown as Activity[];
+const FaFlTeleports = (rawFaFlTeleports as unknown as Activity[]).map(processRawActivity);
 import rawBHTeleports from "~/data/generated/teleports/BH.json";
-const BHTeleports = rawBHTeleports as unknown as Activity[];
+const BHTeleports = (rawBHTeleports as unknown as Activity[]).map(processRawActivity);
 import rawCCTeleports from "~/data/generated/teleports/ClCo.json";
-const CCTeleports = rawCCTeleports as unknown as Activity[];
+const CCTeleports = (rawCCTeleports as unknown as Activity[]).map(processRawActivity);
 
 import rawSlayerMasters from "~/data/generated/slayerMasters.json";
-const slayerMasters = rawSlayerMasters as unknown as Activity[];
+const slayerMasters = (rawSlayerMasters as unknown as Activity[]).map(processRawActivity);
 
 import rawMinigames from "~/data/generated/minigames.json";
-const minigames = rawMinigames as unknown as Activity[];
+const minigames = (rawMinigames as unknown as Activity[]).map(processRawActivity);
 
 const teleports = {
   FaFl: FaFlTeleports,
@@ -32,21 +33,27 @@ const teleports = {
 
 type Activity = {
   name: string;
+  cleanName?: string;
   regions: Record<string, number>;
   relics: Record<string, number>;
 }
 
 const activityPoints = (activity: Activity, selections: UserSelections) => {
-  const regions = selections.regions.map(x => x.name.toLowerCase());
-  const relics = selections.relics.map(x => x.name.toLowerCase());
+  const regions = selections.regions.map(x => x.cleanName);
+  const relics = selections.relics.map(x => x.cleanName);
   let pts = 0;
   pts = Object.entries(activity.regions).map(x => regions.includes(x[0]) ? x[1] : 0).reduce((a, b) => Math.max(a, b), pts);
   pts = Object.entries(activity.relics).map(x => relics.includes(x[0]) ? x[1] : 0).reduce((a, b) => Math.max(a, b), pts);
   return pts;
 };
 
-const cleanName = (name: string) => {
+function cleanName(name: string) {
   return name.toLowerCase().replaceAll("'", "");
+}
+
+function processRawActivity(activity: Activity) {
+  activity.cleanName = cleanName(activity.name);
+  return activity;
 }
 
 export default Activity;

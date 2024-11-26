@@ -1,5 +1,6 @@
 import rawRegions from "~/data/regions.json";
-const regions = rawRegions as unknown as Region[];
+import { cleanName } from "./Activity";
+const regions = (rawRegions as unknown as Region[]).map(processRawRegion);
 
 type Region = {
   name: string;
@@ -7,6 +8,12 @@ type Region = {
   default?: boolean;
   hidden?: boolean;
   code?: string;
+  cleanName: string;
+}
+
+function processRawRegion(region: Region) {
+  region.cleanName = cleanName(region.name);
+  return region;
 }
 
 export default Region;

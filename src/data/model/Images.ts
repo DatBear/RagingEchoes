@@ -16,7 +16,7 @@ const images: Record<string, string> = {
   "rigour": "https://oldschool.runescape.wiki/images/Rigour.png",
   "armour": "https://oldschool.runescape.wiki/images/Defence_icon_%28detail%29.png",
   "weapon": "https://oldschool.runescape.wiki/images/Attack_icon_%28detail%29.png",
-  "melee": "https://oldschool.runescape.wiki/images/Strength_icon_%28detail%29.png",
+  "melee": "https://oldschool.runescape.wiki/images/Melee.png",
   "ranged": "https://oldschool.runescape.wiki/images/Ranged_icon_%28detail%29.png",
   "magic": "https://oldschool.runescape.wiki/images/Magic_icon_%28detail%29.png",
   "rune pouch": "https://oldschool.runescape.wiki/images/thumb/Rune_pouch_detail.png/260px-Rune_pouch_detail.png",

@@ -1,5 +1,6 @@
 import rawRelics from "~/data/relics.json";
-const relics = rawRelics as unknown as Relic[];
+import { cleanName } from "./Activity";
+const relics = (rawRelics as unknown as Relic[]).map(processRawRelic);
 
 type Relic = {
   name: string;
@@ -7,6 +8,13 @@ type Relic = {
   tier: string;
   order: number;
   code: string;
+
+  cleanName: string;
+}
+
+function processRawRelic(region: Relic) {
+  region.cleanName = cleanName(region.name);
+  return region;
 }
 
 export default Relic;
