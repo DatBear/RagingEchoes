@@ -229,15 +229,16 @@ type UsesDisplaySettings = {
 type RegionsProps = Toggleable<Region> & UserSelection & Hideable & Lockable;
 function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsProps) {
   const { isWikiActive } = useWiki();
+  const totalRegions = Math.max(...userSelections.regions.filter(x => !x.default && !x.hidden).map(x => x.order));
   {/* regions */ }
   return <div className={"relative"}>
     <div className={clsx("w-full flex flex-row bg-slate-900 items-center py-4 border-b-4 border-cyan-600", !show && "hidden")}>
       <a className={clsx("w-max text-nowrap font-semibold text-center pl-5", wikiPointer(isWikiActive))} {...wikiLinkProps('Raging Echoes League/Areas')}>Regions</a>
       <div className="grid grid-cols-3 lg:grid-cols-9 justify-between items-center w-full px-10 min-w-max">
-        {regions.filter(x => !x.default && !x.hidden).sort((a, b) => isLocked ? (userSelections.regions.find(x => x.code === a.code)?.order ?? 0) - (userSelections.regions.find(x => x.code === b.code)?.order ?? 0) : 0).map(x => {
+        {regions.filter(x => !x.default && !x.hidden).sort((a, b) => isLocked && totalRegions === 3 ? (userSelections.regions.find(x => x.code === a.code)?.order ?? 0) - (userSelections.regions.find(x => x.code === b.code)?.order ?? 0) : 0).map(x => {
           const order = userSelections.regions.find(r => r.code === x.code)?.order;
-          const hasSelections = userSelections.regions.length > 0;
-          const lockClass = isLocked && !order ? "hidden" : "";
+          const hasSelections = true;
+          const lockClass = isLocked && !order && totalRegions === 3 ? "hidden" : "";
           return <a key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={e => { e.preventDefault(); toggle(x) }} {...wikiLinkProps('Raging Echoes League/Areas#' + (x.wikiName ?? x.name), isWikiActive)}>
             <img src={x.image} alt={x.name} className="w-10" />
             {order && <div className="absolute top-3 font-bold text-shadow text-2xl text-cyan-300">
@@ -254,6 +255,7 @@ function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsPro
 type MasteriesProps = Toggleable<CombatMastery> & UserSelection & Hideable & Lockable;
 function Masteries({ userSelections, toggle, show, setShow, isLocked }: MasteriesProps) {
   const { isWikiActive } = useWiki();
+  const totalMasteries = userSelections.combatMasteries.reduce((a, b) => a + b.level, 0);
   {/* combat masteries */ }
   return <div className="relative">
     <div className={clsx("w-full flex flex-row items-center py-2 bg-slate-900 border-b-4 border-cyan-600", !show && "hidden")}>
@@ -262,13 +264,13 @@ function Masteries({ userSelections, toggle, show, setShow, isLocked }: Masterie
         {combatStyles.map(style => {
           const name = CombatStyle[style];
           const hasCombatMastery = userSelections.combatMasteries.length > 0;
-          const level = userSelections.combatMasteries.find(m => m.style === style)?.level ?? 0;
-          const hideClass = isLocked ? "hidden" : "opacity-20";
-          return <div key={name} className={clsx("flex flex-col items-center", isLocked && level == 0 && hideClass)}>
+          const selectedLevel = userSelections.combatMasteries.find(m => m.style === style)?.level ?? 0;
+          const hideClass = isLocked && totalMasteries === 10 ? "hidden" : "opacity-20";
+          return <div key={name} className={clsx("flex flex-col items-center", isLocked && selectedLevel == 0 && totalMasteries == 10 && hideClass)}>
             <a className="font-bold" {...wikiLinkProps('Raging Echoes League/Combat Masteries#' + name)}>{name}</a>
             <div className="flex flex-row gap-3">
               {combatMasteries.filter(x => x.style === style).map(x => {
-                const masteryClass = clsx("flex flex-col min-w-8", hasCombatMastery && (x.level > level || (isLocked && x.level < level)) ? hideClass : "");
+                const masteryClass = clsx("flex flex-col min-w-8", hasCombatMastery && (x.level > selectedLevel || (isLocked && x.level < selectedLevel)) ? hideClass : "");
                 return <a key={x.name} className={masteryClass} onClick={e => { e.preventDefault(); toggle(x) }} {...wikiLinkProps('Raging Echoes League/Combat Masteries#' + name, isWikiActive)}>
                   <img src={x.image} alt={x.name} className="w-8" />
                   <div className="mt-[-1rem] text-shadow font-bold">{x.name.split(" ")[1]}</div>
