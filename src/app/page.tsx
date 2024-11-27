@@ -238,7 +238,7 @@ function Regions({ userSelections, toggle, show, setShow, isLocked }: RegionsPro
           const order = userSelections.regions.find(r => r.code === x.code)?.order;
           const hasSelections = userSelections.regions.length > 0;
           const lockClass = isLocked && !order ? "hidden" : "";
-          return <a key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={e => { e.preventDefault(); toggle(x) }} {...wikiLinkProps('Raging Echoes League/Areas#' + (x.wikiName ?? x.name))}>
+          return <a key={x.name} className={clsx("flex flex-col items-center w-22 h-14 relative", hasSelections && !order && "opacity-30", lockClass)} onClick={e => { e.preventDefault(); toggle(x) }} {...wikiLinkProps('Raging Echoes League/Areas#' + (x.wikiName ?? x.name), isWikiActive)}>
             <img src={x.image} alt={x.name} className="w-10" />
             {order && <div className="absolute top-3 font-bold text-shadow text-2xl text-cyan-300">
               {order}
@@ -366,7 +366,7 @@ function DisplaySettingsToolbar({ displaySettings, setDisplaySettings }: UsesDis
 
 function ImageToggleButton({ children, show, setShow }: PropsWithChildren<Hideable>) {
   const hideClass = show ? "bg-cyan-700" : "bg-red-700";
-  return <button className={clsx("flex items-center justify-center rounded-md p-1", hideClass)} onClick={_ => setShow(!show)}>
+  return <button className={clsx("flex items-center justify-center rounded-md p-1 border border-slate-800 shadow-sm", hideClass)} onClick={_ => setShow(!show)}>
     {children}
   </button>
 }

@@ -18,7 +18,6 @@ const activitiesV2 = (rawActivities as unknown as NotedActivity[]).map(processRa
 
 function processRawNotedActivity(activity: NotedActivity) {
   activity.cleanName = cleanName(activity?.name ?? "");
-  console.log(activity.cleanName);
   return activity;
 }
 
