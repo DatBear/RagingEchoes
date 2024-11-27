@@ -23,6 +23,7 @@ import rawSlayerMasters from "~/data/generated/slayerMasters.json";
 const slayerMasters = (rawSlayerMasters as unknown as Activity[]).map(processRawActivity);
 
 import rawMinigames from "~/data/generated/minigames.json";
+import NotedActivity from "./NotedActivity";
 const minigames = (rawMinigames as unknown as Activity[]).map(processRawActivity);
 
 const teleports = {
@@ -44,6 +45,15 @@ const activityPoints = (activity: Activity, selections: UserSelections) => {
   let pts = 0;
   pts = Object.entries(activity.regions).map(x => regions.includes(x[0]) ? x[1] : 0).reduce((a, b) => Math.max(a, b), pts);
   pts = Object.entries(activity.relics).map(x => relics.includes(x[0]) ? x[1] : 0).reduce((a, b) => Math.max(a, b), pts);
+  return pts;
+};
+
+const notedActivityPoints = (activity: NotedActivity, selections: UserSelections) => {
+  const regions = selections.regions.map(x => x.cleanName);
+  const relics = selections.relics.map(x => x.cleanName);
+  let pts = 0;
+  pts = Object.entries(activity.regions).map(x => regions.includes(x[0]) ? x[1].value : 0).reduce((a, b) => Math.max(a, b), pts);
+  pts = Object.entries(activity.relics).map(x => relics.includes(x[0]) ? x[1].value : 0).reduce((a, b) => Math.max(a, b), pts);
   return pts;
 };
 

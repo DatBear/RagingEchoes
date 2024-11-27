@@ -17,6 +17,8 @@ import DisplaySettings, { defaultDisplaySettings } from "~/data/model/DisplaySet
 import { useWiki } from "./contexts/WikiStateContext";
 import openWiki, { wikiClick, wikiLinkProps, wikiPointer } from "./utils/openWiki";
 import { newTeleports } from "~/data/model/Teleport";
+import { activitiesV2, notedActivityPoints } from "~/data/model/NotedActivity";
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip";
 
 const runeColors: Record<number, string> = {
   0: "bg-red-700",
@@ -34,6 +36,13 @@ const skillColors: Record<number, string> = {
   1: "bg-orange-700",
   2: "bg-yellow-500",
   3: "bg-green-700",
+};
+
+const skillTextColors: Record<number, string> = {
+  0: "text-red-700",
+  1: "text-orange-700",
+  2: "text-yellow-500",
+  3: "text-green-700",
 };
 
 const getColor = (map: Record<number, string>, points: number) => {
@@ -158,7 +167,7 @@ export default function HomePage() {
     }
   }, [pathname]);
 
-  return <div className="w-full h-full text-white flex flex-col select-none min-h-screen">
+  return <div className="w-full h-full text-white flex flex-col select-none min-h-screen bg-black">
     <Regions userSelections={userSelections} toggle={toggleRegion} show={displaySettings.regions} setShow={x => setDisplaySettings({ regions: x })} isLocked={isLocked} />
     <Masteries userSelections={userSelections} toggle={toggleCombatMastery} show={displaySettings.masteries} setShow={x => setDisplaySettings({ masteries: x })} isLocked={isLocked} />
     <Relics userSelections={userSelections} toggle={toggleRelic} show={displaySettings.relics} setShow={x => setDisplaySettings({ relics: x })} isLocked={isLocked} setIsLocked={setIsLocked} displaySettings={displaySettings} setDisplaySettings={setDisplaySettings} />
@@ -175,7 +184,7 @@ export default function HomePage() {
     {hasSelections() && <>
       <div className={displaySettings.regions || displaySettings.masteries || displaySettings.relics ? "spacer h-2" : "h-6"}></div>
       <div className="flex flex-row flex-wrap items-center justify-around">
-        <Skills userSelections={userSelections} show={displaySettings.skills} setShow={x => setDisplaySettings({ skills: x })} />
+        <SkillsV2 userSelections={userSelections} show={displaySettings.skills} setShow={x => setDisplaySettings({ skills: x })} />
         <Spellbooks userSelections={userSelections} show={displaySettings.spellbooks} setShow={x => setDisplaySettings({ spellbooks: x })} />
         <Prayers userSelections={userSelections} show={displaySettings.prayers} setShow={x => setDisplaySettings({ prayers: x })} />
         <Runes userSelections={userSelections} show={displaySettings.runes} setShow={x => setDisplaySettings({ runes: x })} />
@@ -386,6 +395,44 @@ function Skills({ userSelections, show, setShow }: UserSelection & Hideable) {
   </div>
 }
 
+function SkillsV2({ userSelections, show, setShow }: UserSelection & Hideable) {
+  {/* skills */ }
+  const { isWikiActive } = useWiki();
+  if (!show) return null;
+  return <div className="flex flex-col border border-cyan-900 p-2 rounded-md bg-slate-900 m-5 w-full lg:max-w-96">
+    <h1 className="font-bold text-2xl w-full text-center">Skills</h1>
+    <div className="text-gray-500 italic text-center w-full py-1">Hover a skill to see available methods.</div>
+    <div className="flex flex-row gap-4 items-center justify-center h-full flex-wrap">
+      {skills.map(x => {
+        const activity = activitiesV2.find(a => a.name.toLowerCase() === x.toLowerCase());
+        if (!activity) return null;
+        const pts = notedActivityPoints(activity, userSelections);
+        const img = images[x.toLowerCase()];
+
+        return <Tooltip key={x}>
+          <TooltipTrigger asChild>
+            <a className={clsx("flex w-12 h-12 items-center justify-center rounded-3xl", getColor(skillColors, pts), wikiPointer(isWikiActive))}  {...wikiLinkProps(activity)}>
+              <img src={img} alt={x} className="max-w-8 max-h-8" />
+            </a>
+          </TooltipTrigger>
+          <TooltipContent side="bottom" alignOffset={20}>
+            <div className="flex flex-col w-max z-20 bg-slate-900 border-cyan-900 border rounded-md p-2">
+              <div className={clsx("w-full text-center", getColor(skillTextColors, pts))}>{x}</div>
+              {Object.entries(activity.regions).concat(Object.entries(activity.relics))
+                .filter(x => (x[1].note?.length ?? 0) > 0 && (userSelections.regions.find(r => r.cleanName === cleanName(x[0])) ?? userSelections.relics.find(r => r.cleanName === cleanName(x[0]))))
+                .sort((a, b) => b[1].value - a[1].value)
+                .map(x => <div key={x[0]} className={clsx(getColor(skillTextColors, x[1].value))}>
+                  {x[0]}: {x[1].note}
+                </div>)}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+
+      })}
+    </div>
+  </div>
+}
+
 function Spellbooks({ userSelections, show, setShow }: UserSelection & Hideable) {
   {/* spellbooks */ }
   const { isWikiActive } = useWiki();
@@ -506,46 +553,6 @@ function NewTeleports({ userSelections, show, setShow }: UserSelection & Hideabl
   </div>
 }
 
-function Gear({ userSelections, show, setShow }: UserSelection & Hideable) {
-  {/* gear */ }
-  const { isWikiActive } = useWiki();
-  if (!show) return null;
-  return <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-0 mb-10">
-    {gearSlots.map(slot => {
-      const slotImg = images[GearSlot[slot].toLowerCase()];
-      return <div key={slot} className="flex flex-col justify-between gap-3 items-start border border-cyan-900 m-5 p-2 rounded-md bg-slate-900 h-full">
-        <img src={slotImg} alt={GearSlot[slot]} className="w-8 h-8 place-self-center" />
-        {combatStyles.map(style => {
-          const styleImg = images[CombatStyle[style].toLowerCase()];
-          return <div key={style} className="flex flex-col w-full">
-            <div className="flex flex-row gap-2 items-center">
-              <img src={styleImg} alt={CombatStyle[style]} className="w-8 h-8" />
-              <div className="grid grid-rows-3 w-full">
-                {gearTiers.map(tier => {
-                  const filteredGear = [...new Set(gear.filter(x => filterGear(x, slot, tier, style))
-                    .filter(x => userSelections.regions.find(r => cleanName(r.name) === cleanName(x.region))).map(x => x.name))];
-                  return <div key={tier}>
-                    <div className="flex flex-row gap-5 p-2 border border-cyan-900 h-full justify-start items-center">
-                      <div className="font-bold text-center">{GearTier[tier]}</div>
-                      <div className="flex flex-row gap-1 flex-wrap text-center w-full">
-                        {filteredGear.map((x, idx) => <Fragment key={idx}>
-                          <a className={clsx("inline", wikiPointer(isWikiActive))} {...wikiLinkProps(x)}>{x}</a>
-                          {Separator(idx, filteredGear)}
-                        </Fragment>)}
-                        {filteredGear.length === 0 && <div className="text-gray-500 italic">None</div>}
-                      </div>
-                    </div>
-                  </div>
-                })}
-              </div>
-            </div>
-          </div>
-        })}
-      </div>
-    })}
-  </div>
-}
-
 function SlayerMasters({ userSelections, show, setShow }: UserSelection & Hideable) {
   const { isWikiActive } = useWiki();
   if (!show) return null;
@@ -576,6 +583,51 @@ function Minigames({ userSelections, show, setShow }: UserSelection & Hideable) 
       {[...new Set(filteredMinigames.map(x => x.name))].join(" | ")}
     </div>
   </a>
+}
+
+function Gear({ userSelections, show, setShow }: UserSelection & Hideable) {
+  {/* gear */ }
+  const { isWikiActive } = useWiki();
+  if (!show) return null;
+  return <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-0 mb-10">
+    {gearSlots.map(slot => {
+      const slotImg = images[GearSlot[slot].toLowerCase()];
+      return <div key={slot} className="flex flex-col justify-between gap-3 items-start border border-cyan-900 m-5 p-2 rounded-md bg-slate-900 h-full">
+        <img src={slotImg} alt={GearSlot[slot]} className="w-8 h-8 place-self-center" />
+
+        {slot === GearSlot.Weapon && <div className="w-full text-center">
+          <span className="text-gray-500">Special attack weapons are shown in </span><span className=" text-green-500">green</span>.
+        </div>}
+        {combatStyles.map(style => {
+          const styleImg = images[CombatStyle[style].toLowerCase()];
+          return <div key={style} className="flex flex-col w-full">
+            <div className="flex flex-row gap-2 items-center">
+              <img src={styleImg} alt={CombatStyle[style]} className="w-8 h-8" />
+              <div className="grid grid-rows-3 w-full">
+                {gearTiers.map(tier => {
+                  const gearNames = [...new Set(gear.filter(x => filterGear(x, slot, tier, style))
+                    .filter(x => userSelections.regions.find(r => cleanName(r.name) === cleanName(x.region))).map(x => x.name))];
+                  const filteredGear = gearNames.map(x => gear.find(g => g.name === x)).filter(x => x).map(x => x!);
+                  return <div key={tier}>
+                    <div className="flex flex-row gap-5 p-2 border border-cyan-900 h-full justify-start items-center">
+                      <div className="font-bold text-center">{GearTier[tier]}</div>
+                      <div className="flex flex-row gap-1 flex-wrap text-center w-full">
+                        {filteredGear.map((x, idx) => <Fragment key={idx}>
+                          <a className={clsx("inline", wikiPointer(isWikiActive), x.isSpec && "font-bold text-green-500")} {...wikiLinkProps(x.name)}>{x.name}</a>
+                          {Separator(idx, filteredGear)}
+                        </Fragment>)}
+                        {filteredGear.length === 0 && <div className="text-gray-500 italic">None</div>}
+                      </div>
+                    </div>
+                  </div>
+                })}
+              </div>
+            </div>
+          </div>
+        })}
+      </div>
+    })}
+  </div>
 }
 
 function WikiButton({ displaySettings, setDisplaySettings }: UsesDisplaySettings) {

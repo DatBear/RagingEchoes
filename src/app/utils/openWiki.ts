@@ -2,6 +2,7 @@
 
 import { MouseEventHandler } from "react";
 import Activity from "~/data/model/Activity";
+import NotedActivity from "~/data/model/NotedActivity";
 const baseWikiUrl = 'https://oldschool.runescape.wiki/w/';
 
 const wikiUrl = (name: string) => {
@@ -13,7 +14,7 @@ const openWiki = (name: string) => {
   window.open(wikiUrl(name), "_wiki");
 }
 
-const wikiClick = (activity: Activity | string, isWikiActive: boolean) => {
+const wikiClick = (activity: Activity | NotedActivity | string, isWikiActive: boolean) => {
   if (isWikiActive) {
     if (typeof activity === "string") {
       openWiki(activity);
@@ -33,7 +34,7 @@ type LinkProps = {
   onClick?: MouseEventHandler<HTMLAnchorElement> | undefined
 }
 
-const wikiLinkProps = (activity: Activity | string, isWikiActive = true) => {
+const wikiLinkProps = (activity: Activity | NotedActivity | string, isWikiActive = true) => {
   const props: LinkProps = {
     target: "_wiki"
   };
